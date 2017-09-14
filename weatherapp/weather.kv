@@ -35,7 +35,7 @@ WeatherRoot:
     ListView:
         id:search_result_list
         adapter:
-            ListAdapter(data=[],cls=main.LocationButton, args_converter=root.args_converter)
+            ListAdapter(data=[],cls=main.LocationButton, args_converter=main.locations_args_converter)
 
     BoxLayout:
         Button:
@@ -103,6 +103,20 @@ WeatherRoot:
             size: (self.height - 40, self.height - 40)
 
 
+<Locations@BoxLayout>:
+    orientation: 'vertical'
+    locations_list: locations_list
+    ListView:
+        id: locations_list
+        adapter: ListAdapter(data=[], cls=main.LocationButton, args_converter=main.locations_args_converter)
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: "40dp"
+        Button:
+            text: 'ADD LOCATION'
+            on_press: app.root.show_add_location_form()
+
 <CurrentWeather>:
     orientation: 'vertical'
 
@@ -111,7 +125,7 @@ WeatherRoot:
             text: '{} ({})'.format(root.location[0],root.location[1])
             font_size: "30dp"
         Label:
-            text: '{} '.format(round(root.temp-273,1)) + root.symbol
+            text: '{} '.format(round(root.temp,1)) + root.symbol
             font_size: "30dp"
    
     BoxLayout:
@@ -125,9 +139,9 @@ WeatherRoot:
     BoxLayout:
         orientation: 'horizontal'
         Label:
-            text: 'Low: {} '.format(round(root.temp_min-273,1)) + root.symbol
+            text: 'Low: {} '.format(round(root.temp_min,1)) + root.symbol
         Label:
-            text: 'High: {} '.format(round(root.temp_max-273,1)) + root.symbol
+            text: 'High: {} '.format(round(root.temp_max,1)) + root.symbol
    
     BoxLayout:
         orientation: 'horizontal'
@@ -146,10 +160,25 @@ WeatherRoot:
         size_hint_y:0.91
         text:'Welcome to my Weather app'
 
-    Button:
-        text:'Enter to start'
+    BoxLayout:
+        orientation: 'horizontal'
         size_hint_y:0.09
-        on_press: app.root.show_add_location_form()
+        Button:
+            size_hint_x: 0.33
+            text:'ENTER TO START'
+            on_press: app.root.show_add_location_form()
+
+        Button:
+            size_hint_x: 0.33
+            text:'SETTINGS'
+            on_press: app.open_settings()
+
+        Button:
+            size_hint_x: 0.33
+            text:'CLOSE'
+            on_press: app.stop()
+
+
 
 
 

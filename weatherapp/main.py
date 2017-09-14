@@ -14,6 +14,12 @@ from kivy.uix.listview import ListItemButton
 from kivy.factory import Factory
 from kivy.graphics import Color, Ellipse
 from kivy.clock import Clock
+from kivy.storage.jsonstore import JsonStore
+
+
+def locations_args_converter(index, data_item):
+    city, country = data_item.split("(")
+    return {'location': (city, country[0:-1])}
 
 
 class LocationButton(ListItemButton):
@@ -31,6 +37,14 @@ class Conditions(BoxLayout):
 class WeatherRoot(BoxLayout):
 
     current_weather = ObjectProperty()
+    locations = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(WeatherRoot, self).__init__(**kwargs)
+        self.store = JsonStore("weather_store.json")
+        if self.store.exists("locations"):
+            current_location = self.store.get("locations")["current_location"]
+            self.show_current_weather(current_location)
 
     def show_current_weather(self, location=None):
         self.clear_widgets()
@@ -38,14 +52,30 @@ class WeatherRoot(BoxLayout):
         if self.current_weather is None:
             self.current_weather = CurrentWeather()
 
+        if self.locations is None:
+            self.locations = Factory.Locations()
+            if self.store.exists("locations"):
+                locations = self.store.get("locations")["locations"]
+                self.locations.locations_list.adapter.data.extend(locations)
+
         if location is not None:
             self.current_weather.location = location
-            self.current_weather.update_weather()
-            self.add_widget(self.current_weather)
+            if location not in self.locations.locations_list.adapter.data:
+                self.locations.locations_list.adapter.data.append(location)
+                self.locations.locations_list._trigger_reset_populate()
+                self.store.put("locations", locations=list(
+                    self.locations.locations_list.adapter.data), current_location=location)
+
+        self.current_weather.update_weather()
+        self.add_widget(self.current_weather)
 
     def show_add_location_form(self):
         self.clear_widgets()
         self.add_widget(AddLocationForm())
+
+    def show_locations(self):
+        self.clear_widgets()
+        self.add_widget(self.locations)
 
     def show_cover_page(self):
         self.clear_widgets()
@@ -73,10 +103,6 @@ class AddLocationForm(BoxLayout):
         self.search_results.adapter.data.clear()
         self.search_results.adapter.data.extend(cities)
         self.search_results._trigger_reset_populate()
-
-    def args_converter(self, index, data_item):
-        city, country = data_item.split("(")
-        return {'location': (city, country[0:-1])}
 
 
 class SnowConditions(Conditions):
@@ -118,10 +144,14 @@ class CurrentWeather(BoxLayout):
     conditions_image = StringProperty()
 
     def update_weather(self):
+        config = WeatherApp.get_running_app().config
+        temp_type = config.getdefault("General", "temp_type", "metric").lower()
+        if temp_type == "Imperial".lower():
+            self.symbol = '\u00b0F'
         # print "The user searched for '{}'".format(self.search_input.text)
-        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&APPID=82f2c23dee62adf6047f8b083a4ddfff"
+        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units={}&APPID=82f2c23dee62adf6047f8b083a4ddfff"
         self.location = ["".join(self.location[0:-4]),
-                         "".join(self.location[-3:-1])]
+                         "".join(self.location[-3:-1]), temp_type]
         weather_url = weather_template.format(*self.location)
         request = UrlRequest(weather_url, self.weather_retrieved)
 
@@ -153,7 +183,29 @@ class WeatherApp(App):
     def __init__(self, *args):
         super(WeatherApp, self).__init__(*args)
         self.args = args
-    pass
+
+    def build_config(self, config):
+        config.setdefaults('General', {'temp_type': 'Metric'})
+
+    def build_settings(self, settings):
+        settings.add_json_panel("Weather Settings", self.config, data="""
+            [
+                {
+                    "type": "options",
+                    "title": "Temperature System",
+                    "section": "General",
+                    "key" : "temp_type",
+                    "options": ["Metric", "Imperial"]
+                }
+            ]""")
+
+    def on_config_change(self, config, section, key, value):
+        if config is self.config and key == "temp_type":
+            try:
+                self.root.children[0].update_weather()
+            except AttributeError:
+                pass
+
 
 if __name__ == "__main__":
     WeatherApp().run()
