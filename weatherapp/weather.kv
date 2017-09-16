@@ -5,7 +5,6 @@
 WeatherRoot:
 
 <WeatherRoot>:
-    CoverPage:
 
 <AddLocationForm>:   
     orientation:'vertical'
@@ -31,6 +30,7 @@ WeatherRoot:
         Button:
             size_hint_x: 25
             text:'CURRENT LOCATION'
+            # on_press: root.current_location()
 
     ListView:
         id:search_result_list
@@ -48,7 +48,7 @@ WeatherRoot:
     text: '{} ({})'.format(self.location[0], self.location[1])
     height: "40dp"
     size_hint_y: None
-    on_press:app.root.show_current_weather(self.text)
+    on_press:app.root.show_current_weather(self.location)
 
 <Conditions>:
     Label:
@@ -116,9 +116,64 @@ WeatherRoot:
         Button:
             text: 'ADD LOCATION'
             on_press: app.root.show_add_location_form()
+        Button:
+            text: 'SETTINGS'
+            on_press: app.open_settings()
 
+
+<ForecastLabel@BoxLayout>:
+    date: ""
+    conditions_image: ""
+    conditions: ""
+    temp_min: None
+    temp_max: None
+    symbol: ""
+    canvas.before:
+        Color:
+            rgb: (0.2, 0.2, 0.2)
+        Line:
+            points: (self.pos[0], self.pos[1], self.width, self.pos[1])
+    Label:
+        text: root.date
+    BoxLayout:
+        orientation: 'vertical'
+        AsyncImage:
+            source: root.conditions_image
+        Label:
+            text: root.conditions
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Low: {}'.format(root.temp_min) + root.symbol
+        Label:
+            text: 'High: {}'.format(root.temp_max) + root.symbol
+
+<Forecast>:
+    forecast_container: forecast_container
+    orientation: 'vertical'
+
+    on_left_to_right_line: app.root.show_current_weather(root.location)
+    on_bottom_to_top_line: root.update_weather()
+
+    Label:
+        size_hint_y: 0.1
+        font_size: "30dp"
+        text: '{} ({})'.format(root.location[0], root.location[1])
+    BoxLayout:
+        orientation: 'vertical'
+        id: forecast_container
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: "40dp"
+        Button:
+            text: 'CURRENT'
+            on_press: app.root.show_current_weather(root.location)
+            
 <CurrentWeather>:
     orientation: 'vertical'
+    on_right_to_left_line: app.root.show_forecast(root.location)
+    on_bottom_to_top_line: root.update_weather()
 
     BoxLayout:
         Label:
@@ -152,6 +207,7 @@ WeatherRoot:
             on_press: app.root.show_add_location_form()
         Button:
             text: 'FORECAST'
+            on_press: app.root.show_forecast(root.location)
 
 <CoverPage>:
     orientation:'vertical'

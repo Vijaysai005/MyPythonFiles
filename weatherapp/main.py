@@ -4,6 +4,8 @@ __author__ = 'Vijayasai S'
 import json
 import kivy
 import random
+import datetime
+
 kivy.require("1.10.0")
 
 from kivy.app import App
@@ -16,9 +18,18 @@ from kivy.graphics import Color, Ellipse
 from kivy.clock import Clock
 from kivy.storage.jsonstore import JsonStore
 
+from gesture_box import GestureBox
+
 
 def locations_args_converter(index, data_item):
-    city, country = data_item.split("(")
+
+    if type(data_item) == list:
+        try:
+            city, country = data_item
+        except Exception:
+            city, country = data_item[1:]
+    elif type(data_item) == str:
+        city, country = data_item.split("(")
     return {'location': (city, country[0:-1])}
 
 
@@ -38,6 +49,7 @@ class WeatherRoot(BoxLayout):
 
     current_weather = ObjectProperty()
     locations = ObjectProperty()
+    forecast = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(WeatherRoot, self).__init__(**kwargs)
@@ -80,6 +92,18 @@ class WeatherRoot(BoxLayout):
     def show_cover_page(self):
         self.clear_widgets()
         self.add_widget(CoverPage())
+
+    def show_forecast(self, location=None):
+        self.clear_widgets()
+
+        if self.forecast is None:
+            self.forecast = Forecast()
+
+        if location is not None:
+            self.forecast.location = location
+
+        self.forecast.update_weather()
+        self.add_widget(self.forecast)
 
 
 class AddLocationForm(BoxLayout):
@@ -134,7 +158,7 @@ class SnowConditions(Conditions):
                 Ellipse(pos=(x, y), size=(self.FLAKE_SIZE, self.FLAKE_SIZE))
 
 
-class CurrentWeather(BoxLayout):
+class CurrentWeather(GestureBox):
     symbol = '\u00b0C'
     location = ListProperty(["Chennai", "IN"])
     conditions = StringProperty()
@@ -175,6 +199,53 @@ class CurrentWeather(BoxLayout):
     #     conditions_widget.conditions = conditions_description
     #     # self.conditions.clear_widgets()
     #     # self.conditions.add_widget(conditions_widget)
+
+
+class Forecast(GestureBox):
+
+    location = ListProperty(["Chennai", "IN"])
+    forecast_container = ObjectProperty()
+    type_temp = None
+
+    def update_weather(self):
+        config = WeatherApp.get_running_app().config
+        temp_type = config.getdefault("General", "temp_type", "metric").lower()
+        self.type_temp = temp_type
+        # print "The user searched for '{}'".format(self.search_input.text)
+        weather_template = "http://api.openweathermap.org/data/2.5/forecast?q={},{}&units={}&APPID=82f2c23dee62adf6047f8b083a4ddfff"
+        self.location = ["".join(self.location[0:-4]),
+                         "".join(self.location[-3:-1]), temp_type]
+        weather_url = weather_template.format(*self.location)
+        request = UrlRequest(weather_url, self.weather_retrieved)
+
+    def weather_retrieved(self, request, data):
+        data = json.loads(data.decode()) if not isinstance(data, dict) else data
+        # self.render_conditions(data['weather'][0]['description'])
+        self.forecast_container.clear_widgets()
+        count = 1
+        date = 0
+        for day in data["list"]:
+            label = Factory.ForecastLabel()
+            label.date = datetime.datetime.fromtimestamp(
+                day["dt"]).strftime("%a %b %d")
+            if label.date == datetime.datetime.now().strftime("%a %b %d"):
+                continue
+            if label.date == date:
+                continue
+            if self.type_temp == "Imperial".lower():
+                label.symbol = '\u00b0F'
+            else:
+                label.symbol = '\u00b0C'
+            label.conditions = day["weather"][0]["description"]
+            label.conditions_image = "http://openweathermap.org/img/w/{}.png".format(
+                day['weather'][0]['icon'])
+            label.temp_min = day["main"]["temp_min"]
+            label.temp_max = day["main"]["temp_max"]
+            self.forecast_container.add_widget(label)
+            date = label.date
+            count += 1
+            if count > 3:
+                break
 
 
 class WeatherApp(App):
