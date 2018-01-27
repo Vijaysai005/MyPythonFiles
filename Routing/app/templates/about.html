@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GeoUtils - AboutMe</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(255, 255, 255);
+            background: url(../static/background.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .btn-background {
+            background-color: rgb(34, 76, 139);
+            color: rgb(34, 139, 111);
+        }
+
+        .btn-space {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="about">
+    <nav>
+        <ul>
+            <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
+                <a href="{{url_for('back')}}">Back</a>
+            </li>
+            <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
+                <a href="{{url_for('main')}}">Home</a>
+            </li>
+        </ul>
+    </nav>
+    <h3 class="text-muted">About me</h3>
+    <p>This is a python based web app</p>
+</div>
+</body>
+</html>
