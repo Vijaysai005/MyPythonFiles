@@ -18,7 +18,7 @@ class WayMap(object):
 
     def __init__(self, edge_width=5, size=10, zoom=4, cent_lat=18.6233178741, cent_lng=73.7144361295):
         
-        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom)        
+        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom, apikey="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")        
         self.size = size
         self.edge_width = edge_width
 
