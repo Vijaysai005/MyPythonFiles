@@ -12,13 +12,13 @@ import pandas as pd
 import warnings
 import os
 
-gmaps = googlemaps.Client(key='AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY')
+gmaps = googlemaps.Client(key="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")
 
 class WayMap(object):
 
     def __init__(self, edge_width=5, size=10, zoom=4, cent_lat=18.6233178741, cent_lng=73.7144361295):
         
-        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom)        
+        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom, apikey="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")        
         self.size = size
         self.edge_width = edge_width
 
@@ -65,6 +65,14 @@ class WayMap(object):
             string.append("\""+data[1:-1]+"\"")
         return string
 
+    def reduced_dataframe(self, df, no_of_points=50):
+        if len(df) <= no_of_points:
+            df = df
+        else:
+            index_list = list(range(0, len(df), round(len(df)/no_of_points)))
+            df = df.drop(df.index[index_list])
+            df = df.reset_index(drop=True)
+        return df
 
     def plot_route(self, data, plot_type="plot", color="b", marker=True, type="NoHTML", data_for="No data"):
         """
@@ -79,7 +87,6 @@ class WayMap(object):
             string=self.popUp(df)
         else:
             string=data_for
-
 
         if plot_type == "plot":
 

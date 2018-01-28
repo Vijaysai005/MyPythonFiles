@@ -5,6 +5,7 @@
     <title>GeoUtils</title>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="../static/main.css" rel="stylesheet">
     <style>
         body {
@@ -17,7 +18,7 @@
         }
         .btn-background{
             background-color:rgb(34, 76, 139);
-            color: rgb(34, 139, 111);
+            color: rgb(255, 255, 255);
         }
         .btn-space {
             margin-right: 5px;
@@ -34,45 +35,55 @@
 
             <nav>
                 <ul>
-                    <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation"><a href="{{url_for('about')}}">About Me</a>
+                    <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation"><a href="{{url_for('about')}}">About Me</a>
                     </li>
-                    <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation"><a href="{{url_for('utility')}}">Utility</a>
+                    <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation"><a href="{{url_for('utility')}}">Utility</a>
                     </li>
-                    <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation"><a href="{{url_for('main')}}">Home</a>
+                    <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation">
+                        <a href="{{url_for('route_maps')}}">Maps</a>
+                    </li>
+                    <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation"><a href="{{url_for('main')}}">Home</a>
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">Web App</h3>
+            <h3 class="text-muted">A Python based Web App</h3>
         </div>
  
         <div class="jumbotron">
-            <h1>Geo Utils App</h1>
+            <h3>Geo Utils Web App</h3>
             <p class="lead"></p>
             <p><a class="btn btn-lg btn-success" href="{{url_for('utility')}}" role="button">Get Started</a>
             </p>
         </div>
- 
+        <div>
+            <h2>
+                <a href="{{url_for('utility')}}">List of Utilities</a>
+            </h2>
+        </div>
         <div class="row marketing">
             <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+                <h3>
+                    <a href="{{url_for('haversine_calculator')}}">Haversine Distance</a>
+                </h3>
+                <p>The haversine formula determines the great-circle distance between two points on a sphere given their longitudes and latitudes.
+                </p>
+
+                <h3>Turning Angle</h3>
+                <p>The turning angle is a measure of how sharply a curve changes direction.</p>
             </div>
  
             <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+                <h3>Bearing Angle</h3>
+                <p>The true bearing to a point is the angle measured in degrees in a clockwise direction from the north line. We will refer
+                    to the true bearing simply as the bearing.</p>
+
+                <h3>
+                    <a href="{{url_for('route_maps')}}">Route from source to destination</a>
+                </h3>
+                <p>In this feature, you can see a route from a source to destination that you have selected. Try to give more precise name 
+                    of the place</p>
  
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
             </div>
         </div>
         <footer class="footer">

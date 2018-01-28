@@ -17,13 +17,13 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            padding-top: 40px;
+            padding-top: 50px;
             padding-bottom: 40px;
         }
 
         .btn-background {
             background-color: rgb(34, 76, 139);
-            color: rgb(34, 139, 111);
+            color: rgb(255, 255, 255);
         }
 
         .btn-space {
@@ -37,19 +37,19 @@
         <div class="header">
             <nav>
                 <ul>
-                    <li class="btn pull-right btn-sm btn-primary btn-space btn-background" role="presentation">
+                    <li class="btn pull-right btn-sm btn-default btn-space btn-background" role="presentation">
                         <a href="{{url_for('back')}}">Back</a>
                     </li>
-                    <li class="btn pull-right btn-sm btn-primary btn-space btn-background" role="presentation">
+                    <li class="btn pull-right btn-sm btn-default btn-space btn-background" role="presentation">
                         <a href="{{url_for('main')}}">Home</a>
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">Geo Utility Calulator</h3>
+            <h3 class="text-muted">Geo Utility Calculator</h3>
         </div>
         
         <div class="jumbotron">
-            <h1>Geo Utilities</h1>
+            <h2>Geo Utilities</h2>
             <p class="lead"></p>
             <div class="dropdown">
 
@@ -61,7 +61,7 @@
                         <a role="menuitem" href="{{url_for('haversine_calculator')}}">Haversine Calculator</a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" href="#">Bearing Angle Calculator</a>
+                        <a role="menuitem" href="{{url_for('bearing_calculator')}}">Bearing Angle Calculator</a>
                     </li>
                     <li role="presentation">
                         <a role="menuitem" href="#">Turning Angle Calculator</a>

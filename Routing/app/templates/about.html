@@ -4,16 +4,19 @@
     <title>GeoUtils - AboutMe</title>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
-        body {
+        body{
             background-color: rgb(255, 255, 255);
             background: url(../static/background.jpg) no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
-            padding-top: 40px;
-            padding-bottom: 40px;
+        }
+        div.about{
+            padding-top: 30px;
+            padding-bottom: 30px;
         }
 
         .btn-background {
@@ -24,22 +27,53 @@
         .btn-space {
             margin-right: 5px;
         }
+
+        tab1 {
+            padding-left: 4em;
+        }
+        tab2 {
+            padding-left: 8em;
+        }
+        tab3 {
+            padding-left: 12em;
+        }
     </style>
 </head>
 <body>
-<div class="about">
-    <nav>
+<div>
+    <nav class="top-param">
         <ul>
-            <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
+            <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation">
                 <a href="{{url_for('back')}}">Back</a>
             </li>
-            <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
+            <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation">
                 <a href="{{url_for('main')}}">Home</a>
             </li>
         </ul>
     </nav>
-    <h3 class="text-muted">About me</h3>
-    <p>This is a python based web app</p>
+    <div class="about">
+        <h2>
+            <tab1>
+                 About Me
+            </tab1>
+        </h2>
+        <p>
+            <tab3>
+                Author: Vijayasai.S
+            </tab3>
+            <br>
+            <tab3>
+                &copy; Version 1.0, 2018
+            </tab3>
+            <br>
+            <tab3>
+               This is a python based web app. Main purpose of this app is to give more insight on the geo-location
+               coordinates. <br> <tab3> It has few geo-utility like haversine distance calculator, bearing angle calculator, turning angle 
+               calculator and many more ..</tab3><br>
+            <tab3>To see the above mentioned utilities, click the link: <a href={{url_for('utility')}}>Geo Utils</a></tab3>          
+            </tab3>
+        </p>
+    </div>
 </div>
 </body>
 </html>

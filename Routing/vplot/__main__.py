@@ -38,7 +38,7 @@ _id = "{}_{}_{}".format(source.lower(), destination.lower(), mode)
 
 if not coll.find_one({"_id":_id}):
     print ("Hi I am calling google API")
-    output = gmaps.directions(origin=source, destination=destination, mode=mode)
+    output = gmaps.directions(origin=source, destination=destination)
 
     packet = {}
     packet.update(output[0])
@@ -55,22 +55,16 @@ lat, lng = PR.polyline_route(direction_legs)
 df = pd.DataFrame()
 df["latitude"], df["longitude"] = lat, lng
 
-df = pd.concat((df, df[["latitude", "longitude"]].shift().\
-    rename(columns={"latitude":"latitude1", "longitude":"longitude1"})),axis=1)
-df.loc[0, "latitude1"] = df.loc[0, "latitude"]
-df.loc[0, "longitude1"] = df.loc[0, "longitude"] 
-geo_prop = GeoUtils()
+index = int(len(df)/2)
 
-df["distance"] = df.apply(lambda x: geo_prop.haversine_distance((x["latitude1"], x["longitude1"]),\
-    (x["latitude"], x["longitude"])), axis=1)
-df["bearing_angle"] = df.apply(lambda x: geo_prop.compass((x["latitude1"], x["longitude1"]),\
-    (x["latitude"], x["longitude"]))["angles"]["degrees"], axis=1)
-df["direction"] = df.apply(lambda x:geo_prop.compass((x["latitude1"], x["longitude1"]),\
-    (x["latitude"], x["longitude"]))["directions"]["long"], axis=1)
-print (df.head(30))
+centre_lat = df.loc[index, "latitude"]
+centre_lng = df.loc[index, "longitude"]
 
-centre_lat=df.loc[len(df)/2, "latitude"]
-centre_lng=df.loc[len(df)/2, "longitude"]
-wmap = waymap.WayMap(cent_lat=centre_lat, cent_lng=centre_lng)
-wmap.plot_route(df, plot_type="scatter", type="HTML", data_for=wmap.html_handling(df, "random"))
-wmap.draw("route_map.html")
+wmap = waymap.WayMap(zoom=6, cent_lat=centre_lat, cent_lng=centre_lng)
+wmap.plot_route(df, plot_type="plot")
+
+#reduced_df = wmap.reduced_dataframe(df, no_of_points=50)
+#wmap.plot_route(reduced_df, plot_type="scatter", type="HTML", data_for=wmap.html_handling(reduced_df, "random"))
+
+route = "{}_{}".format(source, destination)
+wmap.draw("/home/vijay/Documents/GitHub/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
