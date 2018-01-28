@@ -9,8 +9,8 @@ Created on Mon Jan 22 16:00:30 2018
 import sys
 sys.path.append("/home/vijay/Documents/GitLab/MyProject/Routing/route/")
 sys.path.append("/home/vijay/Documents/GitLab/MyProject/Routing/utils/")
-sys.path.append("/gitlab_dir/MyPythonFiles/Routing/utils")
-sys.path.append("/gitlab_dir/MyPythonFiles/Routing/route")
+sys.path.append("~/gitlab_dir/MyPythonFiles/Routing/utils")
+sys.path.append("~/gitlab_dir/MyPythonFiles/Routing/route")
 
 import googlemaps
 import waymap
@@ -69,6 +69,6 @@ wmap.plot_route(df, plot_type="plot")
 
 route = "{}_{}".format(source, destination)
 try:
-    wmap.draw("/gitlab_dir/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
+    wmap.draw("~/gitlab_dir/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
 except Exception:
     wmap.draw("/home/vijay/Documents/GitHub/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
