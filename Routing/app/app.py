@@ -11,7 +11,6 @@ import os
 import sys
 sys.path.append("../utils")
 sys.path.append("../vplot")
-os.path.join("/home/vijay/virtual_envs/hacking/lib/python3.5/site-packages/gmplot/markers/")
 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_googlemaps import Map, icons
