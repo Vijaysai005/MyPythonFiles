@@ -9,8 +9,8 @@ Created on Mon Jan 22 16:00:30 2018
 import sys
 sys.path.append("/home/vijay/Documents/GitLab/MyProject/Routing/route/")
 sys.path.append("/home/vijay/Documents/GitLab/MyProject/Routing/utils/")
-sys.path.append("~/gitlab_dir/MyPythonFiles/Routing/utils")
-sys.path.append("~/gitlab_dir/MyPythonFiles/Routing/route")
+sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/Routing/utils")
+sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/Routing/route")
 
 import googlemaps
 import waymap
