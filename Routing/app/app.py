@@ -66,8 +66,11 @@ def calculate_route():
 
 @app.route("/maps/<result>")
 def show_map(result):
-    return render_template("route_map_{}.html".format(result), result=result)
-
+    try:
+        return render_template("route_map_{}.html".format(result), result=result)
+    else:
+        return "Please try to give valid Place name"
+    
 @app.route('/utilities/haversine/')
 def haversine_calculator():
     return render_template('haversine.html')
