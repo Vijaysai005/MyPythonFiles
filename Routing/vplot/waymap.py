@@ -12,13 +12,13 @@ import pandas as pd
 import warnings
 import os
 
-gmaps = googlemaps.Client(key="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")
+gmaps = googlemaps.Client(key="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")
 
 class WayMap(object):
 
     def __init__(self, edge_width=5, size=10, zoom=4, cent_lat=18.6233178741, cent_lng=73.7144361295):
         
-        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom, apikey="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")        
+        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom)        
         self.size = size
         self.edge_width = edge_width
 

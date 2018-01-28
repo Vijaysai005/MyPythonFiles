@@ -58,13 +58,25 @@
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                     <li role="presentation">
+                        <a role="menuitem" href="{{url_for('route_maps')}}">Show Me Route!</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" href="{{url_for('geocode')}}">Geocoder</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" href="{{url_for('reverse_geocode')}}">Reverse Geocoder</a>
+                    </li>
+                    <li role="presentation">
                         <a role="menuitem" href="{{url_for('haversine_calculator')}}">Haversine Calculator</a>
                     </li>
                     <li role="presentation">
                         <a role="menuitem" href="{{url_for('bearing_calculator')}}">Bearing Angle Calculator</a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" href="#">Turning Angle Calculator</a>
+                        <a role="menuitem" href="{{url_for('turning_calculator')}}">Turning Angle Calculator</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" href="{{url_for('tbt_navigation')}}">TBT Navigation</a>
                     </li>
 
                 </ul>

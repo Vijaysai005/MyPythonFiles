@@ -6,9 +6,9 @@ Created on Sat Jan 27 12:12:23 2017
 @author: vijayasais
 """
 
-import time
 import os
 import sys
+
 sys.path.append("../utils")
 sys.path.append("../vplot")
 
@@ -17,6 +17,9 @@ from flask_googlemaps import Map, icons
 from flask_googlemaps import GoogleMaps
 import pandas as pd
 
+from geopy.geocoders import Nominatim
+geolocator = Nominatim()
+
 from geo_utils import GeoUtils
 from waymap import WayMap
 
@@ -24,8 +27,8 @@ wmap = WayMap()
 utils = GeoUtils()
 
 app = Flask(__name__)
-app.config['GOOGLEMAPS_KEY'] = "AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4"
-GoogleMaps(app, key="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY"
+GoogleMaps(app, key="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")
 
 @app.route("/")
 def main():
@@ -71,22 +74,40 @@ def haversine_calculator():
 
 @app.route('/utilities/haversine/', methods = ['POST'])
 def haversine_result():
-    source_lat = float(request.form['source-lat'])
-    source_long = float(request.form['source-long'])
-    dest_lat = float(request.form['dest-lat'])
-    dest_long = float(request.form['dest-long'])
+    condition=True
+    source_lat = request.form['source-lat']
+    source_long = request.form['source-long']
+    dest_lat = request.form['dest-lat']
+    dest_long = request.form['dest-long']
     
-    df = pd.DataFrame()
-    df["latitude"] = [source_lat, dest_lat]
-    df["longitude"] = [source_long, dest_long]
-    data = wmap.html_handling(df, "random")
+    try:
+        source_lat = float(source_lat)
+        source_long = float(source_long)
+        dest_lat = float(dest_lat)
+        dest_long = float(dest_long)
+        
+        result = utils.haversine_distance((source_lat, source_long), (dest_lat, dest_long))
+
+        df = pd.DataFrame()
+        df["latitude"] = [source_lat, dest_lat]
+        df["longitude"] = [source_long, dest_long]
+        df["type"] = ["source", "destination"]
+        df["haversine distance"] = [0, result]
+        data = wmap.html_handling(df, "random")
+    except Exception:
+        condition=False
+        pass
 
     if request.form['action'] == 'submit':
-        result = utils.haversine_distance((source_lat, source_long), (dest_lat, dest_long))
-        output = "Distance: {} km".format(round(result,3))
-        return render_template('haversine.html', result=output)
+        try:
+            output = "Distance: {} km".format(round(result,3))
+        except Exception:
+            return render_template('haversine.html', result="Invalid LatLng", source_lat=source_lat, source_lng=source_long,\
+                       dest_lat=dest_lat, dest_lng=dest_long)
+        return render_template('haversine.html', result=output, source_lat=source_lat, source_lng=source_long,\
+                       dest_lat=dest_lat, dest_lng=dest_long)
     
-    elif request.form['action'] == "Show on Map":
+    elif request.form['action'] == "Show on Map" and condition == True:
         center_lat = (source_lat + dest_lat) / 2.0
         center_lng = (source_long + dest_long) / 2.0
 
@@ -109,6 +130,9 @@ def haversine_result():
                 'infobox': data[1]
             }])
         return render_template('haversine_map.html', trdmap=trdmap)
+    else:
+        return render_template('haversine.html', result="Invalid LatLng", source_lat=source_lat, source_lng=source_long,\
+                       dest_lat=dest_lat, dest_lng=dest_long)
 
 
 @app.route('/utilities/bearing/')
@@ -117,22 +141,40 @@ def bearing_calculator():
 
 @app.route('/utilities/bearing/', methods=['POST'])
 def bearing_result():
-    source_lat = float(request.form['source-lat'])
-    source_long = float(request.form['source-long'])
-    dest_lat = float(request.form['dest-lat'])
-    dest_long = float(request.form['dest-long'])
-    
-    df = pd.DataFrame()
-    df["latitude"] = [source_lat, dest_lat]
-    df["longitude"] = [source_long, dest_long]
-    data = wmap.html_handling(df, "random")
+    condition=True
+    source_lat = request.form['source-lat']
+    source_long = request.form['source-long']
+    dest_lat = request.form['dest-lat']
+    dest_long = request.form['dest-long']
+
+    try:
+        source_lat = float(source_lat)
+        source_long = float(source_long)
+        dest_lat = float(dest_lat)
+        dest_long = float(dest_long)
+
+        result = utils.bearing_angle((source_lat, source_long), (dest_lat, dest_long))
+
+        df = pd.DataFrame()
+        df["latitude"] = [source_lat, dest_lat]
+        df["longitude"] = [source_long, dest_long]
+        df["type"] = ["source", "destination"]
+        df["bearing angle"] = [0, result[0]]
+        data = wmap.html_handling(df, "random")
+    except Exception:
+        condition=False
+        pass
 
     if request.form['action'] == 'submit':
-        result = utils.bearing_angle((source_lat, source_long), (dest_lat, dest_long))
-        output = "Bearing: {} degrees. Clockwise from North".format(round(result[0],3))
-        return render_template('bearing.html', result=output)
+        try:
+            output = "Bearing: {} degrees. Clockwise from North".format(round(result[0],3))
+        except Exception:
+            return render_template('bearing.html', result="Invalid LatLng",  source_lat=source_lat, source_lng=source_long,\
+                       dest_lat=dest_lat, dest_lng=dest_long)
+        return render_template('bearing.html', result=output, source_lat=source_lat, source_lng=source_long,\
+                       dest_lat=dest_lat, dest_lng=dest_long)
     
-    elif request.form['action'] == "Show on Map":
+    elif request.form['action'] == "Show on Map" and condition == True:
         center_lat = (source_lat + dest_lat) / 2.0
         center_lng = (source_long + dest_long) / 2.0
 
@@ -154,8 +196,124 @@ def bearing_result():
                 'lng': dest_long,
                 'infobox': data[1]
             }])
-        return render_template('haversine_map.html', trdmap=trdmap)
+        return render_template('bearing_map.html', trdmap=trdmap)
+    
+    else:
+        return render_template('bearing.html', result="Invalid LatLng",  source_lat=source_lat, source_lng=source_long,\
+                       dest_lat=dest_lat, dest_lng=dest_long)
 
+
+@app.route('/utilities/find_lat_lng/')
+def geocode():
+    return render_template('geocode.html')
+
+@app.route('/utilities/find_lat_lng/', methods=['POST'])
+def geocode_result():
+    place_name = request.form['place']
+    condition=True
+    try:
+        result = geolocator.geocode(place_name)
+
+        df = pd.DataFrame()
+        df["latitude"] = [result.latitude]
+        df["longitude"] = [result.longitude]
+        df["place"] = [place_name]
+        data = wmap.html_handling(df, "random")
+    except Exception:
+        condition=False
+        pass
+
+    if request.form['action'] == 'submit':
+        try:
+            output = "Latitude : {} \nLongitude: {}".format(result.latitude, result.longitude)
+        except Exception:
+            return render_template('geocode.html', result="Invalid place name", place_name=place_name)
+        return render_template('geocode.html', result=output, place_name=place_name)
+    
+    elif request.form['action'] == "Show on Map" and condition == True:
+        try:
+            center_lat = result.latitude
+            center_lng = result.longitude
+        except Exception:
+            return render_template('geocode.html', result="Invalid place name", place_name=place_name)
+
+        trdmap = Map( identifier="trdmap", varname="trdmap", 
+        style="height:592px;width:1300px;margin:0;", 
+        zoom=6,
+        lat=center_lat, 
+        lng=center_lng,
+        markers=[
+            {
+                'icon': icons.dots.blue,
+                'lat': center_lat,
+                'lng': center_lng,
+                'infobox': data[0]
+            }])
+        return render_template('geocode_map.html', trdmap=trdmap)
+    else:
+        return render_template('geocode.html', result="Invalid place name", place_name=place_name)
+
+
+@app.route('/utilities/find_address/')
+def reverse_geocode():
+    return render_template('reverse_geocode.html')
+
+@app.route('/utilities/find_address/', methods=['POST'])
+def reverse_geocode_result():
+    lat = request.form['lat']
+    lng = request.form['lng']
+    condition = True
+    try:
+        result = geolocator.reverse("{}, {}".format(lat, lng))
+        
+        df = pd.DataFrame()
+        df["latitude"] = [lat]
+        df["longitude"] = [lng]
+        df["place"] = [result.address]
+        data = wmap.html_handling(df, "random")
+    except Exception:
+        condition = False
+        pass
+
+    if request.form['action'] == 'submit':
+        try:
+            if result.address:
+                output = "Address: {}".format(result.address)
+            else:
+                output = "Sorry, Unable to find the address"
+        except Exception:
+            return render_template('reverse_geocode.html', result="Invalid place name", lat=lat, lng=lng)
+        return render_template('reverse_geocode.html', result=output, lat=lat, lng=lng)
+    
+    elif request.form['action'] == "Show on Map" and condition == True:
+        
+        center_lat = lat
+        center_lng = lng
+
+        trdmap = Map( identifier="trdmap", varname="trdmap", 
+        style="height:592px;width:1300px;margin:0;", 
+        zoom=6,
+        lat=center_lat, 
+        lng=center_lng,
+        markers=[
+            {
+                'icon': icons.dots.blue,
+                'lat': center_lat,
+                'lng': center_lng,
+                'infobox': data[0]
+            }])
+        return render_template('reverse_geocode_map.html', trdmap=trdmap)
+    
+    else:
+        return render_template('reverse_geocode.html', result="Invalid place name", lat=lat, lng=lng)
+
+@app.route('/utilities/turning/')
+def turning_calculator():
+    return "Coming Soon!"
+
+@app.route('/utilities/turn_by_turn/')
+def tbt_navigation():
+    return "Coming Soon!"
 
 @app.route('/utilities/')
 def utility_back():

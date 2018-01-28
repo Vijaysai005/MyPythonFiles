@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>GeoUtils - Maps</title>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href "http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    
+
     <style>
         body {
             background-color: rgb(255, 255, 255);
@@ -18,11 +18,12 @@
             -o-background-size: cover;
             background-size: cover;
         }
+
         .btn-background {
             background-color: rgb(34, 76, 139);
             color: rgb(34, 139, 111);
         }
-    
+
         .btn-space {
             margin-right: 5px;
         }
@@ -31,11 +32,11 @@
 </head>
 
 <body>
-    <div class="header"> 
+    <div class="header">
         <nav>
             <ul>
                 <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation">
-                    <a href="{{url_for('haversine_calculator')}}">Back</a>
+                    <a href="{{url_for('geocode')}}">Back</a>
                 </li>
                 <li class="btn float-right btn-sm btn-default btn-space btn-background" role="presentation">
                     <a href="{{url_for('main')}}">Home</a>

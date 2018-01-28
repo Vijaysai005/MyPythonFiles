@@ -20,7 +20,7 @@
 
         .btn-background {
             background-color: rgb(34, 76, 139);
-            color: rgb(34, 139, 111);
+            color: rgb(255, 255, 255);
         }
 
         .btn-space {
@@ -54,13 +54,13 @@
                             <label>Source Latitude</label>
                         </td>
                         <td>
-                            <input type="text" name="source-lat" value="18.7345">
+                            <input type="text" name="source-lat" value={{ source_lat }}>
                         </td>
                         <td>
                             <label>Source Longitude</label>
                         </td>
                         <td>
-                            <input type="text" name="source-long" value="72.7345">
+                            <input type="text" name="source-long" value={{ source_lng }}>
                         </td>
                     </tr>
                     <tr>
@@ -68,13 +68,13 @@
                             <label>Destination Latitude</label>
                         </td>
                         <td>
-                            <input type="text" name="dest-lat" value="19.7345">
+                            <input type="text" name="dest-lat" value={{ dest_lat }}>
                         </td>
                         <td>
                             <label>Destination Longitude</label>
                         </td>
                         <td>
-                            <input type="text" name="dest-long" value="73.7345">
+                            <input type="text" name="dest-long" value={{ dest_lng }}>
                         </td>
                     </tr>
                 </table>
@@ -91,6 +91,43 @@
                 </div>
 
             </form>
+            <h2>
+                <a href="https://www.movable-type.co.uk/scripts/latlong.html">Bearing Angle Formula</a>
+            </h2>
+            <div>
+                <p>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ
+                    from the initial heading by varying degrees according to distance and latitude.</p>
+                <p>This formula is for the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along
+                    a great-circle arc will take you from the start point to the end point:
+                </p>
+                <table>
+                    <tr>
+                        <td class="label">Formula: </td>
+                        <td class="formula">θ = atan2( Sin ΔλCos φ
+                            <sub>2</sub> , Cos φ
+                            <sub>1</sub>Sin φ
+                            <sub>2</sub> − Sin φ
+                            <sub>1</sub>Cos φ
+                            <sub>2</sub>Cos Δλ )</td>
+                    </tr>
+                    <tr>
+                        <td class="label align-right">where, </td>
+                        <td>
+                            <i></i>φ
+                            <sub>1</sub>
+                            <i>,</i>λ
+                            <sub>1</sub>
+                            <i> is the start point (lat1,lng1),
+                            </i>φ
+                            <sub>2</sub>
+                            <i>,</i>λ
+                            <sub>2</sub>
+                            <i> is the end point (lat2,lng2) (</i>Δλ
+                            <i> is the difference in longitude)</i>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </body>

@@ -4,9 +4,9 @@ from flask_googlemaps import Map, icons
 
 app = Flask(__name__, template_folder="templates")
 app._static_folder = "../static/"
-app.config['GOOGLEMAPS_KEY'] = "AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4"
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY"
 
-GoogleMaps(app, key="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")
+GoogleMaps(app, key="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")
 
 @app.route('/utilities')
 def utilities():
