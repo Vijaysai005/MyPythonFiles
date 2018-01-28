@@ -69,6 +69,6 @@ wmap.plot_route(df, plot_type="plot")
 
 route = "{}_{}".format(source, destination)
 try:
-    wmap.draw("~/gitlab_dir/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
+    wmap.draw("/home/vijay_sai005/gitlab_dir/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
 except Exception:
     wmap.draw("/home/vijay/Documents/GitHub/MyPythonFiles/Routing/app/templates/route_map_{}.html".format(route))
