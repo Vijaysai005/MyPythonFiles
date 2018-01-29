@@ -39,14 +39,17 @@ _id = "{}_{}_{}".format(source.lower(), destination.lower(), mode)
 
 if not coll.find_one({"_id":_id}):
     print ("Hi I am calling google API")
-    output = gmaps.directions(origin=source, destination=destination)
+    try:
+        output = gmaps.directions(origin=source, destination=destination)
 
-    packet = {}
-    packet.update(output[0])
-    packet["_id"] = _id
+        packet = {}
+        packet.update(output[0])
+        packet["_id"] = _id
 
-    coll.insert(packet)
-
+        coll.insert(packet)
+    except IndexError:
+        pass
+        
 packet = coll.find_one({"_id": _id})
 direction_legs = packet["legs"]
 
