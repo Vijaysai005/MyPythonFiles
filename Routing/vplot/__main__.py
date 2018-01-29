@@ -48,7 +48,7 @@ if not coll.find_one({"_id":_id}):
 
         coll.insert(packet)
     except IndexError:
-        return
+        sys.exit()
 
 packet = coll.find_one({"_id": _id})
 direction_legs = packet["legs"]
