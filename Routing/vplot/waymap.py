@@ -18,7 +18,7 @@ class WayMap(object):
 
     def __init__(self, edge_width=5, size=10, zoom=4, cent_lat=18.6233178741, cent_lng=73.7144361295):
         
-        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom, apikey="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")        
+        self.gmap = gmplot.GoogleMapPlotter(cent_lat, cent_lng, zoom, apikey="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY", folder="../static/%s.png")        
         self.size = size
         self.edge_width = edge_width
 
@@ -74,7 +74,7 @@ class WayMap(object):
             df = df.reset_index(drop=True)
         return df
 
-    def plot_route(self, data, plot_type="plot", color="b", marker=True, type="NoHTML", data_for="No data"):
+    def plot_route(self, data, plot_type="plot", color="m", marker=True, type="NoHTML", data_for="No data"):
         """
         Plot points on map
         """
@@ -93,16 +93,16 @@ class WayMap(object):
             try:
                 self.gmap.plot(df["latitude"].values.tolist(),
                       df["longitude"].values.tolist(), color=color,
-                      edge_width=self.edge_width, marker=marker)
+                      edge_width=self.edge_width, marker=marker, string=string)
             except Exception:
                 try:
                     self.gmap.plot(df["poi_lat"].values.tolist(),
                           df["poi_lng"].values.tolist(), color=color,
-                          edge_width=self.edge_width, marker=marker)
+                          edge_width=self.edge_width, marker=marker, string=string)
                 except:
                     self.gmap.plot(df["lat"].values.tolist(),
                           df["lng"].values.tolist(), color=color,
-                          edge_width=self.edge_width, marker=marker)
+                          edge_width=self.edge_width, marker=marker, string=string)
 
 
         else:

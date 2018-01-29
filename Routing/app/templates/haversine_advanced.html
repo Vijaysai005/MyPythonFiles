@@ -26,8 +26,6 @@
         .btn-space {
             margin-right: 5px;
         }
-        
-
     </style>
 </head>
 
@@ -42,7 +40,7 @@
                         <a href="{{url_for('utility_back')}}">Back</a>
                     </li>
                     <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
-                        <a href="{{url_for('haversine_calculator')}}">New</a>
+                        <a href="{{url_for('old_haversine_calculator')}}">Old</a>
                     </li>
                     <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
                         <a href="{{url_for('main')}}">Home</a>
@@ -54,53 +52,40 @@
         <div class="jumbotron">
             <form id="package_form" action="" method="post">
                 <table>
-                    <tr>               
-                        <td>    
-                            <label>Source Latitude</label>
+                    <tr>
+                        <td>
+                            <label>Source</label>
                         </td>
                         <td>
-                            <input type="text" name="source-lat" value={{ source_lat }}>
-                        </td>
-                        <td>
-                            <label>Source Longitude</label>
-                        </td>
-                        <td>
-                            <input type="text" name="source-long" value={{ source_lng }}>
+                            <input type="text" name="source" value={{ source }}>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Destination Latitude</label>
+                            <label>Destination</label>
                         </td>
                         <td>
-                            <input type="text" name="dest-lat" value={{ dest_lat }}>
-                        </td>
-                        <td>
-                            <label>Destination Longitude</label>
-                        </td>
-                        <td>
-                            <input type="text" name="dest-long" value={{ dest_lng }}>
+                            <input type="text" name="dest" value={{ dest }}>
                         </td>
                     </tr>
                 </table>
                 <br>
                 <div class="panel-body">
-                <input class="btn btn-xs btn-primary btn-space btn-success" type="submit" name="action" value="submit" />
-                <br>
-                <br>
-                <pre>{{ result }}</pre>
+                    <input class="btn btn-xs btn-primary btn-space btn-success" type="submit" name="action" value="submit" />
+                    <br>
+                    <br>
+                    <pre>{{ result }}</pre>
                 </div>
                 <div class="panel-body">
-                <input class="btn btn-xs btn-primary btn-space btn-success" type="submit" name="action" value="Show on Map" />
-                <pre>{{ trdmap }}</pre>
+                    <input class="btn btn-xs btn-primary btn-space btn-success" type="submit" name="action" value="Show on Map" />
+                    <pre>{{ trdmap }}</pre>
                 </div>
-                
+
             </form>
             <h2>
                 <a href="https://en.wikipedia.org/wiki/Haversine_formula" class="mw-headline" id="The_haversine_formula">Haversine formula</a>
             </h2>
-            <p>For any two points on a sphere, the haversine of the
-                central angle between them is given by</p>
+            <p>For any two points on a sphere, the haversine of the central angle between them is given by</p>
             <dl>
                 <dd>
                     <span class="mwe-math-element">
@@ -205,8 +190,9 @@
                                             <mo stretchy="false">)</mo>
                                         </mstyle>
                                     </mrow>
-                                    <annotation encoding="application/x-tex">{\displaystyle \operatorname {hav} \left({\frac {d}{r}}\right)=\operatorname {hav} (\varphi _{2}-\varphi
-                                        _{1})+\cos(\varphi _{1})\cos(\varphi _{2})\operatorname {hav} (\lambda _{2}-\lambda _{1})}</annotation>
+                                    <annotation encoding="application/x-tex">{\displaystyle \operatorname {hav} \left({\frac {d}{r}}\right)=\operatorname {hav} (\varphi
+                                        _{2}-\varphi _{1})+\cos(\varphi _{1})\cos(\varphi _{2})\operatorname {hav} (\lambda
+                                        _{2}-\lambda _{1})}</annotation>
                                 </semantics>
                             </math>
                         </span>
@@ -219,8 +205,7 @@
             <p>where</p>
             <ul>
                 <li>
-                    <span class="texhtml">hav</span> is the
-                    haversine function:</li>
+                    <span class="texhtml">hav</span> is the haversine function:</li>
             </ul>
             <dl>
                 <dd>
@@ -284,8 +269,9 @@
                                             </mrow>
                                         </mstyle>
                                     </mrow>
-                                    <annotation encoding="application/x-tex">{\displaystyle \operatorname {hav} (\theta )=\sin ^{2}\left({\frac {\theta }{2}}\right)={\frac {1-\cos(\theta
-                                        )}{2}}}</annotation>
+                                    <annotation encoding="application/x-tex">{\displaystyle \operatorname {hav} (\theta )=\sin ^{2}\left({\frac {\theta }{2}}\right)={\frac
+                                        {1-\cos(\theta )}{2}}}
+                                    </annotation>
                                 </semantics>
                             </math>
                         </span>
@@ -299,8 +285,7 @@
                 <li>
                     <span class="texhtml">
                         <i>d</i>
-                    </span> is the distance between the two points (along a
-                    great circle of the sphere),</li>
+                    </span> is the distance between the two points (along a great circle of the sphere),</li>
                 <li>
                     <span class="texhtml">
                         <i>r</i>

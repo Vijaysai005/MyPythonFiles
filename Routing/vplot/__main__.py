@@ -62,7 +62,7 @@ centre_lat = df.loc[index, "latitude"]
 centre_lng = df.loc[index, "longitude"]
 
 wmap = waymap.WayMap(zoom=6, cent_lat=centre_lat, cent_lng=centre_lng)
-wmap.plot_route(df, plot_type="plot")
+wmap.plot_route(df, plot_type="plot", type="HTML", data_for=wmap.html_handling(df, "random"))
 
 #reduced_df = wmap.reduced_dataframe(df, no_of_points=50)
 #wmap.plot_route(reduced_df, plot_type="scatter", type="HTML", data_for=wmap.html_handling(reduced_df, "random"))

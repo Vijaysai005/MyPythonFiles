@@ -30,6 +30,7 @@ app = Flask(__name__)
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY"
 GoogleMaps(app, key="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")
 
+app
 @app.route("/")
 def main():
     return render_template('main.html')
@@ -71,12 +72,116 @@ def show_map(result):
     except Exception:
         return "Please try to give valid Place name"
 
+
 @app.route('/utilities/haversine/')
 def haversine_calculator():
-    return render_template('haversine.html')
+    return render_template('haversine_advanced.html')
 
 @app.route('/utilities/haversine/', methods = ['POST'])
 def haversine_result():
+    condition=True
+    source = request.form['source']
+    dest = request.form['dest']
+    
+    try:
+        try:
+
+            source_ = source.split(",")
+
+            source_lat = float(source_[0])
+            source_long = float(source_[1])
+
+            dest_ = dest.split(",")
+
+            dest_lat = float(dest_[0])
+            dest_long = float(dest_[1])
+            result = utils.haversine_distance((source_lat, source_long), (dest_lat, dest_long))
+
+            df = pd.DataFrame()
+            df["latitude"] = [source_lat, dest_lat]
+            df["longitude"] = [source_long, dest_long]
+            df["type"] = ["source", "destination"]
+            df["haversine distance"] = [0, result]
+            data = wmap.html_handling(df, "random")
+
+        except Exception:
+
+            try:
+                check = source.split(",")
+                check = "".join(check)
+                float(check)
+                raise Exception
+            except ValueError:
+                pass
+
+            try:
+                check = dest.split(",")
+                check = "".join(check)
+                float(check)
+                raise Exception
+            except ValueError:
+                pass
+
+            source_result = geolocator.geocode(source)
+            dest_result = geolocator.geocode(dest)
+
+            source_lat = float(source_result.latitude)
+            source_long = float(source_result.longitude)
+            dest_lat = float(dest_result.latitude)
+            dest_long = float(dest_result.longitude)
+
+            result = utils.haversine_distance((source_lat, source_long), (dest_lat, dest_long))
+
+            df = pd.DataFrame()
+            df["latitude"] = [source_lat, dest_lat]
+            df["longitude"] = [source_long, dest_long]
+            df["type"] = ["source", "destination"]
+            df["haversine distance"] = [0, result]
+            data = wmap.html_handling(df, "random")
+    except Exception:
+        condition=False
+        pass
+
+    if request.form['action'] == 'submit':
+        try:
+            output = "Distance: {} km".format(round(result,3))
+        except Exception:
+            return render_template('haversine_advanced.html', result="Invalid LatLng", source=source, dest=dest)
+        return render_template('haversine_advanced.html', result=output, source=source, dest=dest)
+    
+    elif request.form['action'] == "Show on Map" and condition == True:
+        center_lat = (source_lat + dest_lat) / 2.0
+        center_lng = (source_long + dest_long) / 2.0
+
+        trdmap = Map( identifier="trdmap", varname="trdmap", 
+        style="height:592px;width:1300px;margin:0;", 
+        zoom=6,
+        lat=center_lat, 
+        lng=center_lng,
+        markers=[
+            {
+                'icon': icons.dots.green,
+                'lat': source_lat,
+                'lng': source_long,
+                'infobox': data[0]
+            },
+            {
+                'icon': icons.dots.red,
+                'lat': dest_lat,
+                'lng': dest_long,
+                'infobox': data[1]
+            }])
+        return render_template('haversine_map.html', trdmap=trdmap)
+    else:
+        return render_template('haversine_advanced.html', result="Invalid LatLng", source=source, dest=dest)
+
+
+@app.route('/utilities/haversine/old/')
+def old_haversine_calculator():
+    return render_template('haversine.html')
+
+@app.route('/utilities/haversine/old/', methods = ['POST'])
+def old_haversine_result():
     condition=True
     source_lat = request.form['source-lat']
     source_long = request.form['source-long']
@@ -121,13 +226,13 @@ def haversine_result():
         lng=center_lng,
         markers=[
             {
-                'icon': icons.dots.blue,
+                'icon': icons.dots.green,
                 'lat': source_lat,
                 'lng': source_long,
                 'infobox': data[0]
             },
             {
-                'icon': icons.dots.blue,
+                'icon': icons.dots.red,
                 'lat': dest_lat,
                 'lng': dest_long,
                 'infobox': data[1]
@@ -188,13 +293,13 @@ def bearing_result():
         lng=center_lng,
         markers=[
             {
-                'icon': icons.dots.blue,
+                'icon': icons.dots.green,
                 'lat': source_lat,
                 'lng': source_long,
                 'infobox': data[0]
             },
             {
-                'icon': icons.dots.blue,
+                'icon': icons.dots.red,
                 'lat': dest_lat,
                 'lng': dest_long,
                 'infobox': data[1]
@@ -247,7 +352,7 @@ def geocode_result():
         lng=center_lng,
         markers=[
             {
-                'icon': icons.dots.blue,
+                'icon': icons.dots.green,
                 'lat': center_lat,
                 'lng': center_lng,
                 'infobox': data[0]
@@ -300,7 +405,7 @@ def reverse_geocode_result():
         lng=center_lng,
         markers=[
             {
-                'icon': icons.dots.blue,
+                'icon': icons.dots.green,
                 'lat': center_lat,
                 'lng': center_lng,
                 'infobox': data[0]
