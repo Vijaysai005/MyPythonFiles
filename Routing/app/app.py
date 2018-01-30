@@ -26,11 +26,16 @@ from waymap import WayMap
 wmap = WayMap()
 utils = GeoUtils()
 
+# start mongo if not started
+try:
+    os.system("sudo service mongod restart")
+except Exception:
+    pass
+
 app = Flask(__name__)
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY"
 GoogleMaps(app, key="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")
 
-app
 @app.route("/")
 def main():
     return render_template('main.html')
@@ -46,7 +51,6 @@ def back():
 @app.route("/utilities/")
 def utility():
     return render_template('utility.html')
-
 
 @app.route("/maps/")
 def route_maps():
