@@ -23,7 +23,7 @@ geolocator = Nominatim()
 from geo_utils import GeoUtils
 from waymap import WayMap
 
-from PyQt5 import QtWidgets
+#from PyQt5 import QtWidgets
 
 wmap = WayMap()
 utils = GeoUtils()
@@ -86,11 +86,11 @@ def haversine_calculator():
 @app.route('/utilities/haversine/', methods = ['POST'])
 def haversine_result():
 
-    app_ = QtWidgets.QApplication(sys.argv)
-    screen = app_.primaryScreen()
-    rect = screen.availableGeometry()
-    height = rect.height()
-    width = rect.width()
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
 
     condition=True
     source = request.form['source']
@@ -195,11 +195,11 @@ def old_haversine_calculator():
 
 @app.route('/utilities/haversine/old/', methods = ['POST'])
 def old_haversine_result():
-    app_ = QtWidgets.QApplication(sys.argv)
-    screen = app_.primaryScreen()
-    rect = screen.availableGeometry()
-    height = rect.height()
-    width = rect.width()
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
     
     condition=True
     source_lat = request.form['source-lat']
@@ -268,11 +268,11 @@ def bearing_calculator():
 @app.route('/utilities/bearing/', methods=['POST'])
 def bearing_result():
 
-    app_ = QtWidgets.QApplication(sys.argv)
-    screen = app_.primaryScreen()
-    rect = screen.availableGeometry()
-    height = rect.height()
-    width = rect.width()
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
 
     condition=True
     source = request.form['source']
@@ -385,11 +385,11 @@ def old_bearing_calculator():
 @app.route('/utilities/bearing/old/', methods=['POST'])
 def old_bearing_result():
 
-    app_ = QtWidgets.QApplication(sys.argv)
-    screen = app_.primaryScreen()
-    rect = screen.availableGeometry()
-    height = rect.height()
-    width = rect.width()
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
 
     condition=True
     source_lat = request.form['source-lat']
@@ -463,11 +463,11 @@ def geocode():
 @app.route('/utilities/find_lat_lng/', methods=['POST'])
 def geocode_result():
     
-    app_ = QtWidgets.QApplication(sys.argv)
-    screen = app_.primaryScreen()
-    rect = screen.availableGeometry()
-    height = rect.height()
-    width = rect.width()
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
 
     place_name = request.form['place']
     condition=True
@@ -521,11 +521,11 @@ def reverse_geocode():
 @app.route('/utilities/find_address/', methods=['POST'])
 def reverse_geocode_result():
 
-    app_ = QtWidgets.QApplication(sys.argv)
-    screen = app_.primaryScreen()
-    rect = screen.availableGeometry()
-    height = rect.height()
-    width = rect.width()
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
 
     lat = request.form['lat']
     lng = request.form['lng']
