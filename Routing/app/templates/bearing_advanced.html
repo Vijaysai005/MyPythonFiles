@@ -40,7 +40,7 @@
                         <a href="{{url_for('utility_back')}}">Back</a>
                     </li>
                     <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
-                        <a href="{{url_for('bearing_calculator')}}">New</a>
+                        <a href="{{url_for('old_bearing_calculator')}}">Old</a>
                     </li>
                     <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
                         <a href="{{url_for('main')}}">Home</a>
@@ -54,30 +54,18 @@
                 <table>
                     <tr>
                         <td>
-                            <label>Source Latitude</label>
+                            <label>Source</label>
                         </td>
                         <td>
-                            <input type="text" name="source-lat" value={{ source_lat }}>
-                        </td>
-                        <td>
-                            <label>Source Longitude</label>
-                        </td>
-                        <td>
-                            <input type="text" name="source-long" value={{ source_lng }}>
+                            <input type="text" name="source" value={{ source }}>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Destination Latitude</label>
+                            <label>Destination</label>
                         </td>
                         <td>
-                            <input type="text" name="dest-lat" value={{ dest_lat }}>
-                        </td>
-                        <td>
-                            <label>Destination Longitude</label>
-                        </td>
-                        <td>
-                            <input type="text" name="dest-long" value={{ dest_lng }}>
+                            <input type="text" name="dest" value={{ dest }}>
                         </td>
                     </tr>
                 </table>
@@ -98,10 +86,10 @@
                 <a href="https://www.movable-type.co.uk/scripts/latlong.html">Bearing Angle Formula</a>
             </h2>
             <div>
-                <p>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ
-                    from the initial heading by varying degrees according to distance and latitude.</p>
-                <p>This formula is for the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along
-                    a great-circle arc will take you from the start point to the end point:
+                <p>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading
+                    will differ from the initial heading by varying degrees according to distance and latitude.</p>
+                <p>This formula is for the initial bearing (sometimes referred to as forward azimuth) which if followed in a
+                    straight line along a great-circle arc will take you from the start point to the end point:
                 </p>
                 <table>
                     <tr>
