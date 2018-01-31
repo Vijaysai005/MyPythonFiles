@@ -286,9 +286,8 @@ def bearing_result():
             source_long = float(source_[1])
 
             dest_ = dest.split(",")
-            dest_long = float(dest_[0])
-
-            dest_lat = float(dest_[1])
+            dest_lat = float(dest_[0])
+            dest_long = float(dest_[1])
 
             result = utils.compass((source_lat, source_long), (dest_lat, dest_long))
             out = "Bearing: {} degrees. {}\nDirection: Pointing towards {}"\

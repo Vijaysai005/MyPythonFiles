@@ -55,9 +55,11 @@ class GeoUtils(object):
         bearing_degrees = bearing_radians*(180.0/np.pi)
         return bearing_degrees, bearing_radians
 
-    
+
     def turning_angle(self, data_A = (), data_B = ()):
 
+        # Here bearing is True Bearing
+        # Need to analyzed a lot
         bearing1 = data_A[0]
         direction1 = data_A[1]
         bearing2 = data_B[0]
@@ -96,30 +98,46 @@ class GeoUtils(object):
                 beta = 360 - (abs(bearing2 - bearing1))
 
         elif direction1 == "NE":
-            if direction2 in ["W", "N", "S", "NE", "SE", "SW"]:
+            if direction2 in ["W", "N", "S", "NE", "SE", "NW", "E"]:
                 beta = abs(bearing2 - bearing1)
-            elif direction2 in ["E", "NW"]:
-                beta = 360 - (abs(bearing2 - bearing1))
+            elif direction2 == "SW":
+                if abs(bearing2 + 90) <= bearing1:
+                    beta = abs(bearing2 - bearing1)
+                elif abs(bearing2 + 90) > bearing1: 
+                    beta = 360 - (abs(bearing2 - bearing1))
 
         elif direction1 == "SE":
-            if direction2 in ["E"]:
+            if direction2 in ["E", "SE", "N", "S", "NE"]:
                 beta = abs(bearing2 - bearing1)
-            elif direction2 in []:
-                beta = 0
+            elif direction2 in ["W", "SW"]:
+                beta = 360 - (abs(bearing2 - bearing1))
+            elif direction2 == "NW":
+                if abs(bearing2 + 180) <= bearing1:
+                    beta = 360 - (abs(bearing2 - bearing1))
+                elif abs(bearing2 + 180) > bearing1:
+                    beta = abs(bearing2 - bearing1)
 
         elif direction1 == "NW":
-            if direction2 in []:
-                beta = 0
-            elif direction2 in []:
-                beta = 0
+            if direction2 in ["N","E","W", "NW", "NE", "SW"]:
+                beta = abs(bearing2 - bearing1)
+            elif direction2 in ["S"]:
+                beta = abs(bearing2 - abs(bearing1))
+            elif direction2 == "SE":
+                if 180 - bearing2 >= abs(bearing1):
+                    beta = abs(bearing2 - bearing1)
+                elif 180 - bearing2 < abs(bearing1):
+                    beta = 360 - (abs(bearing2 - bearing1))
 
         elif direction1 == "SW":
-            if direction2 in []:
-                beta = 0
-            elif direction2 in []:
-                beta = 0
-
-
+            if direction2 in ["SW", "W", "N", "NW"]:
+                beta = abs(bearing2 - bearing1)
+            elif direction2 in ["S", "E", "SE"]:
+                beta = 360 - (abs(bearing2 - bearing1))
+            elif direction2 == "NE":
+                if 180 - bearing2 >= abs(bearing1):
+                    beta = abs(bearing2 - bearing1)
+                elif 180 - bearing2 < abs(bearing1):
+                    beta = 360 - (abs(bearing2 - bearing1))
         return beta
 
 
