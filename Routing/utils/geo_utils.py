@@ -191,8 +191,6 @@ class GeoUtils(object):
         
         return output
 
-
-
 if __name__ == "__main__":
     geo = GeoUtils()
     output = geo.compass((18.593338, 73.735991), (18.593511, 73.735777))
