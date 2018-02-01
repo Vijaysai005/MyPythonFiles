@@ -64,17 +64,31 @@ def calculate_route():
         source = request.form['source'].lower()
         destination = request.form['dest'].lower()
         mode = "driving"
+        
+        scatterness = "no"
+        no_of_points = 0
 
-        command = "python ../vplot/__main__.py \"{}\" \"{}\" \"{}\"".format(source, destination, mode)
+        if request.form.get("scatterness"):
+            scatterness = "yes"
+            no_of_points = request.form["points"]
+
+        command = "python ../vplot/__main__.py \"{}\" \"{}\" \"{}\" \"{}\" \"{}\"".format(source, destination, mode, scatterness, no_of_points)
         os.system("cd templates/ && rm -rf route_map*")
         os.system(command)
-        route = "{}_{}".format(source, destination)
+        scatter = True
+        if scatterness == "no":
+            scatter = False
+        
+        if no_of_points == "":
+            no_of_points = "all"
+        
+        route = "source->{}_destination->{}_scatterness->{}_points->{}".format(source, destination, scatter, no_of_points)
         return redirect(url_for(".show_map", result=route))
 
 @app.route("/maps/<result>")
 def show_map(result):
     try:
-        return render_template("route_map_{}.html".format(result), result=result)
+        return render_template("route_map:{}.html".format(result), result=result)
     except Exception:
         return "Please try to give valid Place name"
 
@@ -455,6 +469,219 @@ def old_bearing_result():
                        dest_lat=dest_lat, dest_lng=dest_long)
 
 
+@app.route('/utilities/turning/')
+def turning_calculator():
+    return render_template('turning.html')
+
+@app.route('/utilities/turning/', methods=['POST'])
+def turning_result():
+
+    #app_ = QtWidgets.QApplication(sys.argv)
+    #screen = app_.primaryScreen()
+    #rect = screen.availableGeometry()
+    height = 744
+    width = 1314
+
+    condition=True
+    source = request.form['source']
+    mid1 = request.form['mid1']
+    mid2 = request.form['mid2']
+    dest = request.form['dest']
+
+    try:
+        try:
+            source_ = source.split(",")
+            source_lat = float(source_[0])
+            source_long = float(source_[1])
+
+            mid1_ = mid1.split(",")
+            mid1_lat = float(mid1_[0])
+            mid1_long = float(mid1_[1])
+
+            mid2_ = mid2.split(",")
+            mid2_lat = float(mid2_[0])
+            mid2_long = float(mid2_[1])
+
+            dest_ = dest.split(",")
+            dest_lat = float(dest_[0])
+            dest_long = float(dest_[1])
+
+            _from_dir = utils.compass((source_lat, source_long), (mid1_lat, mid1_long))
+            _to_dir = utils.compass((mid2_lat, mid2_long), (dest_lat, dest_long))
+
+            _from_deg, _from_rad = utils.bearing_angle((source_lat, source_long), (mid1_lat, mid1_long))
+            _to_deg, _to_rad = utils.bearing_angle((mid2_lat, mid2_long), (dest_lat, dest_long))
+
+            result = utils.turning_angle((_from_deg, _from_dir['directions']['short']),(_to_deg, _to_dir['directions']['short']))
+
+            out = "Turning angle: {} degrees.".format(round(result, 3))
+
+            df = pd.DataFrame()
+            if mid1_lat != mid2_lat or mid1_long !=  mid1_long:
+                df["latitude"] = [source_lat, mid1_lat, mid2_lat, dest_lat]
+                df["longitude"] = [source_long, mid1_long, mid2_long, dest_long]
+                df["type"] = ["source", "mid1", "mid2", "destination"]
+                df["turning angle"] = [None, None, None, round(result, 3)]
+                df["bearing angle"] = [None, _from_deg, None, _to_deg]
+                df["direction"] = [None,  _from_dir['directions']['short'], None,  _to_dir['directions']['short']]
+            else:
+                df["latitude"] = [source_lat, mid1_lat, dest_lat]
+                df["longitude"] = [source_long, mid1_long, dest_long]
+                df["type"] = ["source", "mid", "destination"]
+                df["turning angle"] = [None, None, round(result, 3)]
+                df["bearing angle"] = [None, _from_deg, _to_deg]
+                df["direction"] = [None,  _from_dir['directions']['short'], _to_dir['directions']['short']]
+            data = wmap.html_handling(df, "random")
+
+        except Exception:
+
+            try:
+                check = source.split(",")
+                check = "".join(check)
+                float(check)
+                raise Exception
+            except ValueError:
+                pass
+
+            try:
+                check = mid1.split(",")
+                check = "".join(check)
+                float(check)
+                raise Exception
+            except ValueError:
+                pass
+            
+            try:
+                check = mid2.split(",")
+                check = "".join(check)
+                float(check)
+                raise Exception
+            except ValueError:
+                pass
+            
+            try:
+                check = dest.split(",")
+                check = "".join(check)
+                float(check)
+                raise Exception
+            except ValueError:
+                pass
+
+            source_result = geolocator.geocode(source)
+            mid1_result = geolocator.geocode(mid1)
+            mid2_result = geolocator.geocode(mid2)
+            dest_result = geolocator.geocode(dest)
+
+            source_lat = float(source_result.latitude)
+            source_long = float(source_result.longitude)
+
+            mid1_lat = float(mid1_result.latitude)
+            mid1_long = float(mid1_result.longitude)
+
+            mid2_lat = float(mid2_result.latitude)
+            mid2_long = float(mid2_result.longitude)
+            
+            dest_lat = float(dest_result.latitude)
+            dest_long = float(dest_result.longitude)
+
+            _from_dir = utils.compass((source_lat, source_long), (mid1_lat, mid1_long))
+            _to_dir = utils.compass((mid2_lat, mid2_long), (dest_lat, dest_long))
+
+            _from_deg, _from_rad = utils.bearing_angle((source_lat, source_long), (mid1_lat, mid1_long))
+            _to_deg, _to_rad = utils.bearing_angle((mid2_lat, mid2_long), (dest_lat, dest_long))
+
+            result = utils.turning_angle((_from_deg, _from_dir['directions']['short']),(_to_deg, _to_dir['directions']['short']))
+
+            out = "Turning angle: {} degrees.".format(round(result, 3))
+            
+            df = pd.DataFrame()
+            if mid1_lat != mid2_lat or mid1_long !=  mid1_long:
+                df["latitude"] = [source_lat, mid1_lat, mid2_lat, dest_lat]
+                df["longitude"] = [source_long, mid1_long, mid2_long, dest_long]
+                df["type"] = ["source", "mid1", "mid2", "destination"]
+                df["turning angle"] = [None, None, None, round(result, 3)]
+                df["bearing angle"] = [None, _from_deg, None, _to_deg]
+                df["direction"] = [None,  _from_dir['directions']['short'], None,  _to_dir['directions']['short']]
+            else:
+                df["latitude"] = [source_lat, mid1_lat, dest_lat]
+                df["longitude"] = [source_long, mid1_long, dest_long]
+                df["type"] = ["source", "mid", "destination"]
+                df["turning angle"] = [None, None, round(result, 3)]
+                df["bearing angle"] = [None, _from_deg, _to_deg]
+                df["direction"] = [None,  _from_dir['directions']['short'], _to_dir['directions']['short']]   
+            data = wmap.html_handling(df, "random")
+
+
+    except Exception:
+        condition=False
+        pass
+
+    if request.form['action'] == 'submit':
+        try:
+            output = out
+        except Exception:
+            return render_template('turning.html', result="Invalid LatLng", source=source, mid1=mid1, mid2=mid2, dest=dest)
+        return render_template('turning.html', result=output, source=source, mid1=mid1, mid2=mid2, dest=dest)
+    
+    elif request.form['action'] == "Show on Map" and condition == True:
+        center_lat = (source_lat + mid1_lat + mid2_lat + dest_lat) / 4.0
+        center_lng = (source_long + mid1_long + mid2_long + dest_long) / 4.0
+        if mid1_lat != mid2_lat or mid1_long !=  mid1_long:
+            marker_list = [{
+                    'icon': icons.dots.green,
+                    'lat': source_lat,
+                    'lng': source_long,
+                    'infobox': data[0]
+                },  
+                {
+                    'icon': icons.dots.blue,
+                    'lat': mid1_lat,
+                    'lng': mid1_long,
+                    'infobox': data[1]
+                },
+                {
+                    'icon': icons.dots.blue,
+                    'lat': mid2_lat,
+                    'lng': mid2_long,
+                    'infobox': data[2]
+                }, 
+                {
+                    'icon': icons.dots.red,
+                    'lat': dest_lat,
+                    'lng': dest_long,
+                    'infobox': data[3]
+                }]
+        else:
+            marker_list = [{
+                    'icon': icons.dots.green,
+                    'lat': source_lat,
+                    'lng': source_long,
+                    'infobox': data[0]
+                },  
+                {
+                    'icon': icons.dots.blue,
+                    'lat': mid1_lat,
+                    'lng': mid1_long,
+                    'infobox': data[1]
+                },
+                {
+                    'icon': icons.dots.red,
+                    'lat': dest_lat,
+                    'lng': dest_long,
+                    'infobox': data[2]
+                }]
+
+        trdmap = Map( identifier="trdmap", varname="trdmap", 
+        style="height:{}px;width:{}px;margin:0;".format(height,width), 
+        zoom=6,
+        lat=center_lat, 
+        lng=center_lng,
+        markers=marker_list)
+        return render_template('turning_map.html', trdmap=trdmap)
+    
+    else:
+        return render_template('turning.html', result="Invalid LatLng", source=source, mid1=mid1, mid2=mid2, dest=dest)
+
 @app.route('/utilities/find_lat_lng/')
 def geocode():
     return render_template('geocode.html')
@@ -572,10 +799,6 @@ def reverse_geocode_result():
     
     else:
         return render_template('reverse_geocode.html', result="Invalid place name", lat=lat, lng=lng)
-
-@app.route('/utilities/turning/')
-def turning_calculator():
-    return "Coming Soon!"
 
 @app.route('/utilities/turn_by_turn/')
 def tbt_navigation():

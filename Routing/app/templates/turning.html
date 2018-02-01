@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>GeoUtils - Reverse Geocode</title>
+    <title>GeoUtils - Turning</title>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
 
@@ -20,13 +20,20 @@
 
         .btn-background {
             background-color: rgb(34, 76, 139);
-            color: rgb(34, 139, 111);
+            color: rgb(255, 255, 255);
         }
 
         .btn-space {
             margin-right: 5px;
         }
     </style>
+    <script>
+        function MidFilling(f) {
+            if (f.midfilling.checked == true) {
+                f.mid2.value = f.mid1.value;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -37,33 +44,54 @@
             <nav>
                 <ul>
                     <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
-                        <a href="{{url_for('reverse_geocode')}}">Back</a>
+                        <a href="{{url_for('utility_back')}}">Back</a>
                     </li>
                     <li class="btn float-right btn-xs btn-primary btn-space btn-background" role="presentation">
                         <a href="{{url_for('main')}}">Home</a>
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">Find the place for given LatLng</h3>
+            <h3 class="text-muted">Turning Angle Calculator</h3>
         </div>
         <div class="jumbotron">
+
             <form id="package_form" action="" method="post">
-                <table>
+                <table onload="MidFilling(this.form)">
                     <tr>
                         <td>
-                            <label>Latitude</label>
+                            <label>Source</label>
                         </td>
                         <td>
-                            <input type="text" name="lat" value={{ lat }}>
+                            <input type="text" name="source" value={{ source }}>
                         </td>
                         <td>
-                            <label>Longitude</label>
+                            <label>Mid</label>
                         </td>
                         <td>
-                            <input type="text" name="lng" value={{ lng }}>
+                            <input type="text" name="mid1" value={{ mid1 }}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Mid</label>
+                        </td>
+                        <td>
+                            <input id="re-type" type="text" name="mid2" value={{ mid2 }}>
+                            <!datalist id="re-type">
+                                <!option value={{ mid1 }}>
+                            <!/datalist>
+                        </td>
+                        <td>
+                            <label>Destination</label>
+                        </td>
+                        <td>
+                            <input type="text" name="dest" value={{ dest }}>
                         </td>
                     </tr>
                 </table>
+                <input type="checkbox" name="midfilling" onclick="MidFilling(this.form)">
+                <em>Check this box if you want same mid value.</em>
+                <br>
                 <br>
                 <div class="panel-body">
                     <input class="btn btn-xs btn-primary btn-space btn-success" type="submit" name="action" value="submit" />

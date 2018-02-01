@@ -66,11 +66,13 @@ class WayMap(object):
         return string
 
     def reduced_dataframe(self, df, no_of_points=50):
-        if len(df) <= no_of_points:
+        if no_of_points == "all":
+            df = df
+        elif len(df) <= no_of_points:
             df = df
         else:
             index_list = list(range(0, len(df), round(len(df)/no_of_points)))
-            df = df.drop(df.index[index_list])
+            df = df.loc[index_list]
             df = df.reset_index(drop=True)
         return df
 
