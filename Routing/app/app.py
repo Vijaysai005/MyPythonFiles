@@ -79,7 +79,9 @@ def calculate_route():
         if scatterness == "no":
             scatter = False
         
-        if no_of_points == "":
+        try:
+            int(no_of_points)
+        except ValueError:
             no_of_points = "all"
         
         route = "source->{}_destination->{}_scatterness->{}_points->{}".format(source, destination, scatter, no_of_points)
