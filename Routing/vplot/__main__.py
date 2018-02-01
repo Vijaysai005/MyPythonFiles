@@ -96,7 +96,10 @@ no_of_points = 0
 if sys.argv[4] == "yes":
     scatterness = True
     if sys.argv[5] != "":
-        no_of_points = int(sys.argv[5])
+        try:
+            no_of_points = int(sys.argv[5])
+        except ValueError:
+            no_of_points = "all"
     else:
         no_of_points = "all"
 
