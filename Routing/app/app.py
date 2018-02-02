@@ -23,6 +23,12 @@ geolocator = Nominatim()
 from geo_utils import GeoUtils
 from waymap import WayMap
 
+from pymongo import MongoClient
+mongo_client = MongoClient(host="localhost", port=27017)
+
+db_name = "personalization"
+db = mongo_client[db_name]
+
 #from PyQt5 import QtWidgets
 
 wmap = WayMap()
@@ -42,13 +48,51 @@ GoogleMaps(app, key="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY")
 def main():
     return render_template('main.html')
 
+@app.route("/home/")
+def home():
+    return render_template("home.html")
+
 @app.route("/about/")
 def about():
     return render_template('about.html')
 
 @app.route("/")
 def back():
-    retur
+    return
+
+@app.route("/",  methods=["POST"])
+def sign_log():
+    if request.form['action'] == 'Sign Up':
+    
+        username = request.form['user_name']
+        password = request.form['pass_word']
+
+        coll = db[username]
+        check = coll.find_one({"_id":username})
+        if check:
+            output = "* Username is already present"
+            return render_template('layout.html', result=output)
+        
+        packet = {"_id":username, "user_name":username, "password":password}
+        coll.insert_one(packet)
+        output = "*Success! Now you can Log In"
+        return render_template('layout.html', result=output)
+    
+    elif request.form['action'] == "Log In":
+
+        username = request.form['log-user']
+        password = request.form['log-pass']
+        coll = db[username]
+        ptr = coll.find_one({"user_name":username})
+        if ptr:
+            if ptr["password"] == password:
+                return redirect(url_for('home'))
+            else:
+                output = "*Invalid Credentials"
+                return render_template('layout.html', result=output)
+        else:
+            output = "*Invalid Credentials"
+            return render_template('layout.html', result=output)
 
 @app.route("/utilities/")
 def utility():
