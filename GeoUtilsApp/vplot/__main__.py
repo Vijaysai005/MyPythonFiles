@@ -13,12 +13,9 @@ import googlemaps
 
 import pandas as pd
 
-sys.path.append("/home/vijay/Documents/GitHub/MyPythonFiles/GeoUtilsApp/route/")
-sys.path.append("/home/vijay/Documents/GitHub/MyPythonFiles/GeoUtilsApp/utils/")
-sys.path.append("/home/vijay/Documents/GitHub/MyPythonFiles/GeoUtilsApp/config/")
-# sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/utils")
-# sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/route")
-# sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/config/")
+sys.path.append("../route")
+sys.path.append("../utils")
+sys.path.append("../config")
 
 from geo_utils import GeoUtils
 from pymongo import MongoClient
@@ -38,7 +35,7 @@ mode = sys.argv[3]
 _id = "{}_{}_{}".format(source.lower(), destination.lower(), mode)
 
 """ Creating mongo connection."""
-db = mongo_client[config.MONGO_DB_NAME]
+db = mongo_client[config.MONGO_TBT_DB]
 coll = db[config.MONGO_ROUTE_COLLECTION]
 
 if not coll.find_one({"_id":_id}):

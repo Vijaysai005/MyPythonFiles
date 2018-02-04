@@ -1,2 +1,88 @@
-{% extends "layout.html" %} {% block content %}
-{% endblock %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Geo Utils</title>
+		<script src="../static/js/jquery.min.js"></script>
+		<script src="../static/js/init.js"></script>
+		
+		<link rel="stylesheet" href="../static/css/skel.css" />
+		<link rel="stylesheet" href="../static/css/style.css" />
+		<link rel="stylesheet" href="../static/css/style-xlarge.css" />
+	</head>
+	<body id="top">
+
+		<!-- Header -->
+			<header id="header" class="skel-layers-fixed">
+				<h1><a href="#">Geo Utils</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="{{url_for('main')}}">Home</a></li>
+						<li><a href="{{url_for('utilities')}}">Utilities</a></li>
+						<li><a href="{{url_for('maps')}}">Map</a></li>
+						<li><a href="{{url_for('about')}}">About App</a></li>
+						<li><a href="#" class="button special">Sign Up</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<div class="inner">
+					<h2>Geo Utils App</h2>
+					<p>An app for geo utilities</p>
+					<ul class="actions">
+						<li><a href="#content" class="button big special">Sign Up</a></li>
+						<li><a href="#elements" class="button big alt">Learn More</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="wrapper style1">
+				<header class="major">
+					<h2>To know more about the world</h2>
+					<p>Gives more insight on the geo-location coordinates.</p>
+				</header>
+				<div class="container">
+					<div class="row">
+						<div class="4u">
+							<section class="special box">
+								<i class="icon fa-map-marker major"></i>
+								<h3>Location Finder</h3>
+								<p>Geocoder tells you the location of a place. Reverse Geocode tells you the address
+								of the given lat-lng.</p>
+							</section>
+						</div>
+						<div class="4u">
+							<section class="special box">
+								<i class="icon fa-globe major"></i>
+								<h3>Geo Utils</h3>
+								<p>Great-circle distance between two points on a Earth. True bearing to a point in a clockwise direction from the North.</p>
+							</section>
+						</div>
+						<div class="4u">
+							<section class="special box">
+								<i class="icon fa-location-arrow major"></i>
+								<h3>TBT Navigation</h3>
+								<p>Route from a source to destination with turn-by-turn navigation.</p>
+							</section>
+						</div>
+					</div>
+				</div>
+			</section>
+				
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<ul class="copyright">
+						<li>Author: Vijayasai.S</li>
+						<li>v1.0, 2018</li>
+						<li>&copy; All rights reserved.</li>
+						<li>Design: <a href="http://templated.co">Templated</a></li>
+						<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+					</ul>
+				</div>
+			</footer>
+
+	</body>
+</html>

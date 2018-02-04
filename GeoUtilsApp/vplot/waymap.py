@@ -7,11 +7,11 @@ Created on Thur Jan 4 01:00:30 2018
 """
 
 import os, sys, warnings
-sys.path.append("/home/vijay/Documents/GitHub/MyPythonFiles/GeoUtilsApp/config/")
+sys.path.append("../config")
 
 import googlemaps, gmplot
 import pandas as pd
-from config import Configuration
+from configuration import Configuration
 
 config = Configuration()
 gmaps = googlemaps.Client(key=config.API_KEY)

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Geo Utils - Maps</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/skel.min.js"></script>
+    <script src="../static/js/skel-layers.min.js"></script>
+    <script src="../static/js/init.js"></script>
+
+    <link rel="stylesheet" href="../static/css/skel.css" />
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/style-xlarge.css" />
+    <script type="text/javascript">
+        function dynInput(cbox) {
+            if (cbox.checked) {
+                var input = document.createElement("input");
+                input.id = cbox.name + "1";
+                input.type = "text";
+                input.name = "points"
+                var div = document.createElement("label");
+                div.id = cbox.name + "2";
+                div.style = "display:inline-block;"
+                div.innerHTML = "No. of points to display ";
+                document.getElementById("insertlabel").appendChild(div);
+                document.getElementById("insertinputs").appendChild(input)
+            } else {
+                document.getElementById(cbox.name + "1").remove();
+                document.getElementById(cbox.name + "2").remove();
+            }
+        }
+    </script>
+</head>
+
+<body id="top">
+
+    <!-- Header -->
+    <header id="header" class="skel-layers-fixed">
+        <h1>
+            <a href="#">Maps</a>
+        </h1>
+        <nav id="nav">
+            <ul>
+                <li>
+                    <a href="{{url_for('main')}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{url_for('utilities')}}">Utilities</a>
+                </li>
+                <li>
+                    <a href="{{url_for('back')}}">Back</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner">
+            <h2>Route Finder</h2>
+            <p>Route from source to destination</p>
+            <form id="package_form" method="post">
+                <table>
+                    <tr>
+                        <td>
+                            <label style="display:inline-block;">Source</label>
+                        </td>
+                        <td>
+                            <input type="text" name="source" value="Pune">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Destination</label>
+                        </td>
+                        <td>
+                            <input type="text" name="dest" value="Mumbai">
+                        </td>
+                    </tr>
+                </table>
+                <input type="checkbox" name="scatterness" onclick="dynInput(this);">
+                <em>Check this box for scatter data in the route</em>
+                <form><table><tr><td id="insertlabel"></td><td id="insertinputs"></td></tr></table></form>
+                <div class="panel-body">
+                    <input class="button big special" type="submit" name="action" value="Search" />
+                </div>
+        </div>
+    </section>
+    <footer id="footer">
+        <div class="container">
+            <ul class="copyright">
+                <li>Author: Vijayasai.S</li>
+                <li>v1.0, 2018</li>
+                <li>&copy; All rights reserved.</li>
+                <li>Design:
+                    <a href="http://templated.co">Templated</a>
+                </li>
+                <li>Images:
+                    <a href="http://unsplash.com">Unsplash</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</body>
+
+</html>
