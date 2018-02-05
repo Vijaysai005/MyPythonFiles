@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../static/css/skel.css" />
     <link rel="stylesheet" href="../static/css/style.css" />
     <link rel="stylesheet" href="../static/css/style-xlarge.css" />
+
     <script type="text/javascript">
         function dynInput(cbox) {
             if (cbox.checked) {
@@ -62,7 +63,7 @@
         <div class="inner">
             <h2>Route Finder</h2>
             <p>Route from source to destination</p>
-            <form id="package_form" method="post">
+            <form action="/maps/" method="post">
                 <table>
                     <tr>
                         <td>
@@ -83,10 +84,18 @@
                 </table>
                 <input type="checkbox" name="scatterness" onclick="dynInput(this);">
                 <em>Check this box for scatter data in the route</em>
-                <form><table><tr><td id="insertlabel"></td><td id="insertinputs"></td></tr></table></form>
-                <div class="panel-body">
+                <!--form action="/maps/" method="post"-->
+                    <table>
+                        <tr>
+                            <td id="insertlabel"></td>
+                            <td id="insertinputs"></td>
+                        </tr>
+                    </table>
+                <!--/form-->
+                <div>
                     <input class="button big special" type="submit" name="action" value="Search" />
                 </div>
+            </form>
         </div>
     </section>
     <footer id="footer">

@@ -23,3 +23,9 @@ class Configuration(object):
         """" Google."""
         # Api key
         self.API_KEY="AIzaSyCMhFUOGH9jLY44y1edzxBLKlmoBOlp_GY"
+        self.ROUTE_MODE="driving"
+
+        """ Maps. """
+        self.DATA_SCATTERNESS="no"
+        self.DATA_POINTS=50
+        self.POP_STATUS="table-popup"

@@ -19,7 +19,7 @@ sys.path.append("../config")
 
 from geo_utils import GeoUtils
 from pymongo import MongoClient
-from config import Configuration
+from configuration import Configuration
 from polyline_route import PolylineRoute
 
 """ Creating required instances."""
@@ -92,15 +92,16 @@ index = int(len(df)/2)
 centre_lat = df.loc[index, "latitude"]
 centre_lng = df.loc[index, "longitude"]
 
-wmap = waymap.WayMap(zoom=6, cent_lat=centre_lat, cent_lng=centre_lng)
+wmap = waymap.WayMap(zoom=6, cent_lat=centre_lat,
+                     cent_lng=centre_lng, folder="../static/images/%s.png")
 
 
 pop_status = "none"
 if sys.argv[6] != "":
     pop_status = sys.argv[6]
 
-scatterness = False
-no_of_points = 0
+scatterness = False if config.DATA_SCATTERNESS == "no" else True
+no_of_points = config.DATA_POINTS
 if sys.argv[4] == "yes":
     scatterness = True
     if sys.argv[5] != "":

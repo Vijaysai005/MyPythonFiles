@@ -49,12 +49,6 @@ def main():
 @app.route("/utilities/")
 def utilities():
     return "hi"
-    
-
-@app.route("/maps/")
-def maps():
-    return render_template("map-input.html")
-
 
 @app.route("/about/")
 def about():
@@ -63,7 +57,54 @@ def about():
 @app.route("/")
 def back():
     return 
+
+@app.route("/login/")    
+def log_in():
+    return render_template("login.html")
+
+@app.route("/maps/")
+def maps():
+    return render_template("map_input.html")
     
+@app.route("/maps/", methods=["POST"])
+def calculate_route():
+    if request.method == 'POST':
+        source = request.form['source'].lower()
+        destination = request.form['dest'].lower()
+        mode = config.ROUTE_MODE
+
+        scatterness = config.DATA_SCATTERNESS
+        no_of_points = config.DATA_POINTS
+        pop_status = config.POP_STATUS
+
+        if request.form.get("scatterness"):
+            scatterness = "yes"
+            no_of_points = request.form["points"]
+
+        command = "python ../vplot/__main__.py \"{}\" \"{}\" \"{}\" \"{}\" \"{}\"  \"{}\"".format(
+            source, destination, mode, scatterness, no_of_points, pop_status) 
+        os.system("cd templates/ && rm -rf route_map*")
+        os.system(command)
+
+        scatter = False if scatterness == "no" else True 
+
+        try:
+            int(no_of_points)
+        except ValueError:
+            no_of_points = "all"
+
+        route = "source->{}_destination->{}_scatterness->{}_points->{}".format(
+            source, destination, scatter, no_of_points)
+        return redirect(url_for(".show_map", result=route))
+
+
+@app.route("/maps/<result>")
+def show_map(result):
+    try:
+        return render_template("route_map:{}.html".format(result), result=result)
+    except Exception:
+        return "Please try to give valid Place name"
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=int(sys.argv[1]), threaded=True)
 
