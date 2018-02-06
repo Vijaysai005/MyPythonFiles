@@ -81,7 +81,7 @@ def calculate_route():
             scatterness = "yes"
             no_of_points = request.form["points"]
 
-        command = "python ../vplot/__main__.py \"{}\" \"{}\" \"{}\" \"{}\" \"{}\"  \"{}\"".format(
+        command = "python ../vplot/__main__.py \"{}\" \"{}\" \"{}\" \"{}\" \"{}\" \"{}\"".format(
             source, destination, mode, scatterness, no_of_points, pop_status) 
         os.system("cd templates/ && rm -rf route_map*")
         os.system(command)
