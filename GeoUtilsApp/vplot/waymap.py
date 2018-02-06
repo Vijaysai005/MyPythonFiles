@@ -8,7 +8,7 @@ Created on Thur Jan 4 01:00:30 2018
 
 import os, sys, warnings
 sys.path.append("../config")
-
+sys.path.append("../")
 import googlemaps, gmplot
 import pandas as pd
 from configuration import Configuration
