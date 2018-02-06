@@ -9,9 +9,11 @@ Created on Mon Jan 15 11:44:30 2018
 """ Import module."""
 import os
 import sys
-sys.path.append("../utils")
-sys.path.append("../vplot")
-sys.path.append("../config")
+sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/utils")
+sys.path.append(
+    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/vplot")
+sys.path.append(
+    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/config")
 
 import gmplot
 import pandas as pd
