@@ -11,7 +11,7 @@ class ChatBox(ChatBot):
 
     def __init__(self):
         ChatBot.__init__(self, "Hearty", storage_adapter="chatterbot.storage.MongoDatabaseAdapter", trainer="chatterbot.trainers.ChatterBotCorpusTrainer")
-        self.train('chatterbot.corpus.english')
+        #self.train('chatterbot.corpus.english')
 
     def get_output(self, input_text):
         answer = self.get_response(input_text)
