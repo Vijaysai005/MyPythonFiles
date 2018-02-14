@@ -6,7 +6,6 @@ Created on Wed Feb 14 22:00:00 2018
 @author: Vijayasai
 """
 from chatterbot import ChatBot
-chatbot = ChatBot('Hearty', trainer="chatterbot.trainers.ChatterBotCorpusTrainer")
 
 class ChatBox(ChatBot):
 
