@@ -44,12 +44,12 @@ class WayMap(object):
         data = []
         for index in range(len(df.index)):
             x = pd.DataFrame(df_trans[index])
-            x.to_html("~/{}_{}.html".format(name, index), index=True, header=False)
-            with open("~/{}_{}.html".format(name, index), 'r') as myfile:
+            x.to_html("/home/vijay_sai005/{}_{}.html".format(name, index), index=True, header=False)
+            with open("/home/vijay_sai005/{}_{}.html".format(name, index), 'r') as myfile:
                 html_data = "'+'".join(myfile.read().splitlines())
                 new = "\'{}\'".format(html_data)
             myfile.close()
-            os.remove("~/{}_{}.html".format(name, index))
+            os.remove("/home/vijay_sai005/{}_{}.html".format(name, index))
             data.append(new)
         return data
 
