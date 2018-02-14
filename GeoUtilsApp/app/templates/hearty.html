@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Utils - Hearty</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/skel.min.js"></script>
+    <script src="/static/js/skel-layers.min.js"></script>
+    <script src="/static/js/init.js"></script>
+
+    <link rel="stylesheet" href="/static/css/skel.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/style-xlarge.css" />
+</head>
+
+<body id="top">
+
+    <!-- Header -->
+    <header id="header" class="skel-layers-fixed">
+        <h1>
+            <a href="#">Hi Hearty Here!</a>
+        </h1>
+        <nav id="nav">
+            <ul>
+                <li>
+                    <a href="{{url_for('main')}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{url_for('utilities')}}">Utilities</a>
+                </li>
+                <li>
+                    <a href="{{url_for('about')}}">About App</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner">
+            <h2>Hi I am Hearty</h2>
+            <p>Do you want to chat with me?</p>
+            <form action="" method="post">
+                <table>
+                    <tr>
+                        <td>
+                            <label style="display:inline-block;">You</label>
+                        </td>
+                        <td>
+                            <input type="text" name="you" value="{{ you }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label style="display:inline-block;">Hearty</label>
+                        </td>
+                        <td>
+                            <input type="text" name="hearty" value="{{ hearty }}">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <ul class="actions">
+                        <li>
+                            <input class="button big special" type="submit" name="action" value="Submit">
+                        </li>
+                        <li>
+                            <a href="{{ url_for('chat_train')}}" class="button big alt">Train Me</a>
+                        </li>
+                    </ul>
+                    <br>         
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer id="footer">
+        <div class="container">
+            <ul class="copyright">
+                <li>Author: Vijayasai.S</li>
+                <li>v1.0, 2018</li>
+                <li>&copy; All rights reserved.</li>
+                <li>Design:
+                    <a href="http://templated.co">Templated</a>
+                </li>
+                <li>Images:
+                    <a href="http://unsplash.com">Unsplash</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</body>
+
+</html>

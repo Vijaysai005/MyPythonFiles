@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Utils - Training Hearty</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/skel.min.js"></script>
+    <script src="/static/js/skel-layers.min.js"></script>
+    <script src="/static/js/init.js"></script>
+
+    <link rel="stylesheet" href="/static/css/skel.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/style-xlarge.css" />
+</head>
+
+<body id="top">
+
+    <!-- Header -->
+    <header id="header" class="skel-layers-fixed">
+        <h1>
+            <a href="#">Train Me!</a>
+        </h1>
+        <nav id="nav">
+            <ul>
+                <li>
+                    <a href="{{url_for('main')}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{url_for('utilities')}}">Utilities</a>
+                </li>
+                <li>
+                    <a href="{{url_for('about')}}">About App</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner">
+            <h2>Hi I am Hearty</h2>
+            <p>You are training me Hurrah!</p>
+            <form action="" method="post">
+                <table>
+                    <tr>
+                        <td>
+                            <label style="display:inline-block;">Query</label>
+                        </td>
+                        <td>
+                            <input type="text" name="query" value="{{ query }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label style="display:inline-block;">Response</label>
+                        </td>
+                        <td>
+                            <input type="text" name="response" value="{{ response }}">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <ul class="actions">
+                        <li>
+                            <input class="button big special" type="submit" name="action" value="Train Me">
+                        </li>
+                        <li>
+                            <a href="{{ url_for('chat_some')}}" class="button big alt">Back to Chat</a>
+                        </li>
+                    </ul>
+                    <pre>{{ result }}</pre>
+                    <br>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer id="footer">
+        <div class="container">
+            <ul class="copyright">
+                <li>Author: Vijayasai.S</li>
+                <li>v1.0, 2018</li>
+                <li>&copy; All rights reserved.</li>
+                <li>Design:
+                    <a href="http://templated.co">Templated</a>
+                </li>
+                <li>Images:
+                    <a href="http://unsplash.com">Unsplash</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</body>
+
+</html>

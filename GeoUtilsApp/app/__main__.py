@@ -9,11 +9,9 @@ Created on Mon Jan 15 11:44:30 2018
 """ Import module."""
 import os
 import sys
-sys.path.append("/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/utils")
-sys.path.append(
-    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/vplot")
-sys.path.append(
-    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/config")
+sys.path.append("../utils")
+sys.path.append("../vplot")
+sys.path.append("../config")
 
 import gmplot
 import pandas as pd
@@ -23,6 +21,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 from waymap import WayMap
 from geo_utils import GeoUtils
+from chatbot import ChatBox
 from pymongo import MongoClient
 from geopy.geocoders import Nominatim
 from configuration import Configuration
@@ -31,6 +30,7 @@ from configuration import Configuration
 utils = GeoUtils()
 geolocator = Nominatim()
 config = Configuration()
+ai_response = ChatBox()
 
 """ Starting mongo if its not started."""
 try:
@@ -63,6 +63,36 @@ def back():
 @app.route("/login/")    
 def log_in():
     return render_template("login.html")
+
+@app.route("/hearty/")
+def chat_some():
+    return render_template("hearty.html")
+
+@app.route("/hearty/", methods=["POST"])
+def chat_resp():
+    if request.method == "POST":
+        if request.form['action'] == 'Submit':
+            query = request.form['you']
+            answer = ai_response.get_output(query)
+            return render_template('hearty.html', you=query, hearty=answer)
+        
+@app.route("/hearty/training/")
+def chat_train():
+    return render_template("hearty_training.html")
+
+@app.route("/hearty/training/", methods=['POST'])
+def chat_train_resp():
+    if request.method == "POST":
+        if request.form['action'] == 'Train Me':
+            query = request.form['query']
+            response = request.form['response']
+            try:
+                ai_response.do_train(query, response)
+                result="Thanks for training me"
+            except Exception:
+                result = "Invalid query or response"
+
+            return render_template("hearty_training.html", result=result)
 
 @app.route("/maps/")
 def maps():

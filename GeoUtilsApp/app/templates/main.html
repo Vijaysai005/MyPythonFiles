@@ -3,6 +3,8 @@
 	<head>
 		<title>Geo Utils</title>
 		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/skel.min.js"></script>
+		<script src="/static/js/skel-layers.min.js"></script>
 		<script src="/static/js/init.js"></script>
 		
 		<link rel="stylesheet" href="/static/css/skel.css" />
@@ -18,6 +20,9 @@
 					<ul>
 						<li><a href="{{url_for('main')}}">Home</a></li>
 						<li><a href="{{url_for('utilities')}}">Utilities</a></li>
+						<li>
+							<a href="{{url_for('chat_some')}}">Hearty</a>
+						</li>
 						<li><a href="{{url_for('maps')}}">Map</a></li>
 						<li><a href="{{url_for('about')}}">About App</a></li>
 						<li><a href="{{url_for('log_in')}}" class="button special">Log In</a></li>
@@ -55,9 +60,9 @@
 						</div>
 						<div class="4u">
 							<section class="special box">
-								<i class="icon fa-globe major"></i>
-								<h3>Geo Utils</h3>
-								<p>Great-circle distance between two points on a Earth. True bearing to a point in a clockwise direction from the North.</p>
+								<a href="{{url_for('haversine_calculator')}}"><i class="icon fa-globe major"></i></a>
+								<a href="{{url_for('haversine_calculator')}}"><h3>Geo Utils</h3></a>
+								<p>Great-circle distance between two <a href="{{url_for('haversine_calculator')}}"></a>points on a Earth. True bearing to a point in a clockwise direction from the North.</p>
 							</section>
 						</div>
 						<div class="4u">

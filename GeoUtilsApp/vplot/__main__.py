@@ -13,12 +13,9 @@ import googlemaps
 
 import pandas as pd
 
-sys.path.append(
-    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/route")
-sys.path.append(
-    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/utils")
-sys.path.append(
-    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/config")
+sys.path.append("../route")
+sys.path.append("../utils")
+sys.path.append("../config")
 
 from geo_utils import GeoUtils
 from pymongo import MongoClient

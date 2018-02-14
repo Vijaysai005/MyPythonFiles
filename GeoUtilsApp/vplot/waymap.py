@@ -7,8 +7,7 @@ Created on Thur Jan 4 01:00:30 2018
 """
 
 import os, sys, warnings
-sys.path.append(
-    "/home/vijay_sai005/gitlab_dir/MyPythonFiles/GeoUtilsApp/config/")
+sys.path.append("../config/")
 
 import googlemaps, gmplot
 import pandas as pd
