@@ -90,6 +90,7 @@ class NeuralNetwork(object):
 
         output_layer_input = np.dot(self.hidden_layer_activations, self.weight_output_layer) \
             + self.bias_output_layer
+        print (output_layer_input)
         self.output = self._sigmoid(output_layer_input)
 
 
@@ -107,7 +108,8 @@ class NeuralNetwork(object):
         slope_hidden_layer = self._derivative_sigmoid(self.hidden_layer_activations)
 
         d_output = np.multiply(Error, slope_output_layer)
-
+        print (d_output.shape)
+        print(self.weight_output_layer.shape)
         Error_at_hidden_layer = np.dot(d_output, self.weight_output_layer.T)
 
         d_hidden_layer = np.multiply(Error_at_hidden_layer, slope_hidden_layer)
@@ -239,7 +241,7 @@ if __name__ == "__main__":
     test_X = np.matrix(X[-100:, :])
     test_y = y[-100:] - 1
     t = 70000 '''
-    NN = NeuralNetwork(hidden_layer_neurons=5, iterations=50, gradient_threshold=0.1, rms_threshold=0.001, learning_rate=1e-5)
+    NN = NeuralNetwork(hidden_layer_neurons=6, iterations=50, gradient_threshold=0.1, rms_threshold=0.001, learning_rate=1e-5)
 
     NN.setXy(train_X, train_y)
     NN.fit()

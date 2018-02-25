@@ -6,6 +6,7 @@ Created on Tue Feb 20 00:07:30 2018
 """
 
 import pandas as pd
+import numpy as np
 
 class Train(object):
 
@@ -17,10 +18,10 @@ class Train(object):
         return self.df.as_matrix()
 
     def getX(self):
-        return self.training_data[:,0:-1]
+        return np.matrix(self.training_data[:,0:-1])
 
     def gety(self):
-        return self.training_data[:,-1]
+        return np.matrix(self.training_data[:,-1]).T
 
     
 if __name__ == "__main__":
