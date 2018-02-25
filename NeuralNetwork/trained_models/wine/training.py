@@ -27,7 +27,7 @@ except OSError:
     whl = None ; bhl = None
     wol = None ; bol = None
 
-NN = NeuralNetwork.NeuralNetwork(iterations=100, rms_threshold=0.01, learning_rate=1.0,
+NN = NeuralNetwork.NeuralNetwork(iterations=100000, rms_threshold=0.01, learning_rate=1.0,
                                     weight_hidden_layer=whl, weight_output_layer=wol, 
                                     bias_hidden_layer=bhl, bias_output_layer=bol)
 train = train_data.Train(filename="../../data/wine/wine_data.csv")
